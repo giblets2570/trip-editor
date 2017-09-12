@@ -9,6 +9,7 @@ module.exports = function(User,Auth) {
     usernameField: 'email',
     passwordField: 'password'
   }, function(username, password, done) {
+    console.log(username, password);
     User.findOne({email:username},(err,user) => {
       if(err)
         return done(null, false, { message: 'Error in request.' });

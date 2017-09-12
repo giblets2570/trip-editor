@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import SignUp from '../SignUp'
+import Login from '../Login'
 import { 
   Collapse,
   Navbar,
@@ -19,10 +20,7 @@ function LoadingNav(props) {
   if(!props.result) {
     return (
       <Nav className="ml-auto" navbar>
-        <NavItem>
-          <NavLink href="/login">Login</NavLink>
-        </NavItem>
-        <SignUp/>
+        <Login/><SignUp/>
       </Nav>
     )
   }
