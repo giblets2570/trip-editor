@@ -34,10 +34,14 @@ class Login extends Component {
   }
   async login(e) {
     e.preventDefault();
-    let result = await axios.post('http://localhost:8000/auth/login',{
-      email: this.state.email,
-      password: this.state.password
-    });
+    try{
+      let result = await axios.post('http://localhost:8000/auth/login',{
+        email: this.state.email,
+        password: this.state.password
+      });
+    } catch(e) {
+      console.log(e);
+    }
   }
   handleChange(event,key) {
     this.setState({
