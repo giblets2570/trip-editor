@@ -55,6 +55,9 @@ export let removeRepeats = (_array) => {
 	return array;
 }
 
+export let validatePresenceOf = function(value) {
+  return value && value.length;
+};
 
 export let uniqueSet = (_array) => {
 	let array = _array.slice();

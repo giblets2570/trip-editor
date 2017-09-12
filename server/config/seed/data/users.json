@@ -1,14 +1,7 @@
 {
 	"user_1": {
 		"_id": "58a6cb2b61ccfa09f1f9c965",
-		"name": "user_1",
-		"route": "route_1",
-		"coordinates": [51.5152610,-0.0722240]
-	},
-	"user_2": {
-		"_id": "58a6cb2b61ccfa09f1f9c966",
-		"name": "user_2",
-		"route": "route_2",
-		"coordinates": [51.5152610,-0.0722240]
+		"email": "test@test.com",
+		"password": "test"
 	}
 }

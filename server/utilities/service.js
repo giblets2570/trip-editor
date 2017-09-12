@@ -26,7 +26,6 @@ class Service {
   async index(query) {
     query = query || {};
     if(query.date) query.date = dateDaySearch(query.date);
-    console.log(`Model: ${this.Model}`);
     let objects = await this.Model.find(query).exec();
     return objects;
   }
@@ -47,7 +46,7 @@ class Service {
   * @return {Object} created
   */
   async create(object) {
-    object = new this.Model(object)
+    object = new this.Model(object);
     await object.save();
     return object;
   }
@@ -63,28 +62,6 @@ class Service {
     if (!existing) return;
     let updated = Object.assign(existing,object);
     await updated.save();
-    return updated;
-  }
-
-  /*
-  * Create a object if _id doesn't exist, if not updates old
-  * @param {Object} object
-  * @return {Object} created/updated
-  */
-  async createOrUpdate(object) {
-    object._id = (object.id && !object._id) ? object.id : object._id;
-    object._id = object._id || generateId();
-    object = new this.Model(object);
-    let updated = await this.Model.findOneAndUpdate(
-      {
-        _id: object._id,
-      },
-      object,
-      {
-        upsert: true,
-        new: true
-      }
-    ).exec();
     return updated;
   }
 

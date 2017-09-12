@@ -55,29 +55,13 @@ let seed = async () => {
 	// Remove all data
 	await removeCollections([User]);
 
-	// We are now seeding data from app
-	return;
+	// // We are now seeding data from app
+	// return;
 
-	// Create locations
-	// await createDocuments(locations,generateCreator(Location,locationFormatter));
-	// function locationFormatter(location){
-	// 	location.coordinates = createPoint(location.coordinates);
-	// }
-
-	// Create routes
-	// await createDocuments(routes,generateCreator(Route,routeFormatter));
-	// function routeFormatter(route){
-	// 	route.waypoints.forEach((waypoint) => {
-	// 		waypoint.location = locations[waypoint.location]
-	// 	});
-	// }
 
 	// // Create users
 	await createDocuments(users,generateCreator(User,userFormatter));
-	function userFormatter(user){
-		// user.route = routes[user.route];
-		// user.coordinates = createPoint(user.coordinates);
-	}
+	function userFormatter(user){}
 
 }
 

@@ -6,7 +6,11 @@ let config = {
 	seed:  process.env.hasOwnProperty('SEED') ? (process.env.SEED === 'true') : false,
 	mongo: {
 		uri: process.env.MONGOLAB_URI
-	}
+	},
+	secrets: {
+		session: process.env.SECRET
+	},
+	userRoles: ['admin','manager','user']
 }
 
 switch (NODE_ENV){

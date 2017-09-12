@@ -2,12 +2,13 @@
 
 class Endpoint {
 
-  constructor(router,service) {
+  constructor(router,service,Auth) {
 
     // Set object attributes
     this.router = router;
     this.service = service;
-
+    this.Auth = Auth;
+    
     // Set endpoints
     this.endpoints();
   }
@@ -60,7 +61,7 @@ class Endpoint {
     let object; 
     let data = req.body;
     try {
-      object = await this.service.createOrUpdate(data);
+      object = await this.service.create(data);
     } catch(error) {
       return this.sendError(res,error);
     }
