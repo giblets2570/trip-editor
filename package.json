@@ -59,10 +59,16 @@
     "react-addons-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",
     "react-loading": "^0.1.4",
+    "react-redux": "^5.0.6",
     "react-scripts": "1.0.13",
     "react-transition-group": "^1.2.0",
     "reactstrap": "^4.8.0",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-promise-middleware": "^4.4.1",
+    "redux-thunk": "^2.2.0",
     "request": "^2.79.0",
-    "request-promise": "^4.1.1"
+    "request-promise": "^4.1.1",
+    "thunk": "0.0.1"
   }
 }

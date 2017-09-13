@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import SignUp from '../SignUp'
 import Login from '../Login'
+import NavHeader from '../NavHeader'
 import { 
   Collapse,
   Navbar,
@@ -11,6 +12,8 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
+
+import { connect } from 'react-redux'
 
 import './style.css';
 import axios from 'axios';
@@ -68,16 +71,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar color="faded" light toggleable>
-          <NavbarToggler right onClick={this.toggle} />
-          <NavbarBrand href="/">reactstrap</NavbarBrand>
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <LoadingNav 
-              loaded={this.state.loaded}
-              result={this.state.result}
-            />
-          </Collapse>
-        </Navbar>
+        <NavHeader/>
         <div className="App">
           <div className="App-header">
             <h2>Trip Planner</h2>
@@ -91,4 +85,8 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect((store) => {
+  return {
+    
+  }
+})(App);

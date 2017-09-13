@@ -16,6 +16,8 @@ import {
 
 import axios from 'axios';
 
+import { connect } from 'react-redux'
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -94,4 +96,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default connect((store) => {
+  return {
+    logging_in: store.auth.logging_in
+  }
+})(Login);
