@@ -54,7 +54,6 @@ module.exports = function(config,User){
     if (!roleRequired) {
       throw new Error('Required role needs to be set');
     }
-
     return compose()
       .use(isAuthenticated())
       .use(function(req, res, next) {

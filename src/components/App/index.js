@@ -16,23 +16,14 @@ import { userIsNotAuthenticated, userIsAuthenticated } from '../../auth'
 const Trips = userIsAuthenticated(TripsComponent);
 const Login = userIsNotAuthenticated(LoginComponent);
 
-
 class App extends Component {
   componentWillMount() {
-    if(this.props.token && !this.props.logged_in){
-      this.props.dispatch(isLoggedIn(this.props.token));
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.token && !nextProps.logged_in){
-      this.props.dispatch(isLoggedIn(nextProps.token));
-    }
+    this.props.dispatch(isLoggedIn());
   }
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter className="App">
         <div>
-          <NavHeader/>
           <Switch>
             <Route exact path="/" component={Login}/>
             <Route path="/trips" component={Trips}/>
@@ -45,7 +36,6 @@ class App extends Component {
 
 export default connect((store) => {
   return {
-    token: store.auth.token,
     logged_in: store.auth.logged_in
   }
 })(App);

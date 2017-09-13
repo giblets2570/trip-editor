@@ -97,6 +97,13 @@ class UserModel extends Model {
 			}
 		});
 	}
+
+	get profile() {
+		return {
+			email: this.email,
+			role: this.role
+		}
+	}
 }
 
 UserModel.schema = {
@@ -117,9 +124,6 @@ UserModel.hooks = {
 	pre: {
 		save: function(next) {
 			// Handle new/update passwords
-			
-			console.log("PRE SAVE HOOK");
-
 			if (!this.isModified('password')) {
 				return next();
 			}

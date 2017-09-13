@@ -12,6 +12,13 @@ export function login(email, password) {
 	}
 }
 
+export function logout() {
+	return {
+		type: "LOGOUT",
+		payload: null
+	}
+}
+
 export function singup() {
 	return {
 		type: "SIGNUP_FULFILLED",
@@ -21,13 +28,12 @@ export function singup() {
 	}
 }
 
-export function isLoggedIn(token) {
-	console.log(token);
+export function isLoggedIn() {
 	return {
 		type: "CHECK_LOGGED_IN",
-		payload: axios.get(`${domain}auth/loggedin`,{
+		payload: axios.get(`${domain}auth/loggedin`, {
 			headers: {
-				'Authorization': token
+				'Authorization': localStorage.token
 			}
 		})
 	}

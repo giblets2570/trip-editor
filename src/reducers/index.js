@@ -1,9 +1,9 @@
 import { combineReducers } from "redux"
 
 import auth from "./authReducer"
-import navHeader from "./navHeaderReducer"
+import trips from "./tripsReducer"
 
 export default combineReducers({
 	auth,
-	navHeader
+	trips
 })

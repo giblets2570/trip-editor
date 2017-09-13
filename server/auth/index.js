@@ -32,13 +32,11 @@ module.exports = function(config, User,Auth) {
       }
 
       var token = Auth.signToken(user._id, user.role);
-      let role = user.role;
-      res.json({ token, role });
+      res.json({ token, user: user.profile });
     })(req, res, next)
   });
 
   router.get('/loggedin', (req, res) => {
-    console.log(req.headers);
     let token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers['authorization'];
     if(req.isAuthenticated()){
       User.findOne(req.user._id,(err,user) => {
@@ -46,13 +44,14 @@ module.exports = function(config, User,Auth) {
         return res.status(200).json(req.user);
       })
     }else if(token){
-      console.log("Token:", token);
-      jwt.verify(token, config.secrets.session, (err, decoded) => {
+      jwt.verify(token, config.secrets.session, async (err, decoded) => {
+        console.log(decoded);
         if (err) {
-          return res.send('0');
+          return res.status(401).end();
         } 
         else {
-          return res.send('Logged in');
+          let user = await User.findById(decoded._id).exec();
+          return res.send(user.profile);
         }
       });
     }else{

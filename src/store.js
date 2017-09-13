@@ -1,5 +1,4 @@
-import { compose, applyMiddleware, createStore } from "redux"
-import { persistStore, autoRehydrate } from "redux-persist"
+import { applyMiddleware, createStore } from "redux"
 
 import { createLogger }  from "redux-logger"
 import thunk from "redux-thunk"
@@ -11,13 +10,7 @@ const middleware = applyMiddleware(promise(), thunk, createLogger())
 
 const store = createStore(
 	reducer, 
-	undefined,
-	compose(
-		middleware,
-		// autoRehydrate()
-	)
+	middleware
 )
-
-// persistStore(store);
 
 export default store;
