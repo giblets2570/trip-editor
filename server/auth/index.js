@@ -3,7 +3,7 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken'; 
 import LocalStrategy from 'passport-local';
 
-module.exports = function(User,Auth) {
+module.exports = function(config, User,Auth) {
 
   passport.use(new LocalStrategy({
     usernameField: 'email',
@@ -32,21 +32,28 @@ module.exports = function(User,Auth) {
       }
 
       var token = Auth.signToken(user._id, user.role);
-      res.json({ token });
+      let role = user.role;
+      res.json({ token, role });
     })(req, res, next)
   });
 
   router.get('/loggedin', (req, res) => {
-    let token = req.body.token || req.query.token || req.headers['x-access-token'];
+    console.log(req.headers);
+    let token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers['authorization'];
     if(req.isAuthenticated()){
       User.findOne(req.user._id,(err,user) => {
         if(err||!user){return res.send('0')}
         return res.status(200).json(req.user);
       })
     }else if(token){
-      jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
-        if (err) {return res.send('0');} 
-        else {return res.send('Logged in');}
+      console.log("Token:", token);
+      jwt.verify(token, config.secrets.session, (err, decoded) => {
+        if (err) {
+          return res.send('0');
+        } 
+        else {
+          return res.send('Logged in');
+        }
       });
     }else{
       return res.send('0');

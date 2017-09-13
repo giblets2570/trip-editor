@@ -1,92 +1,51 @@
 import React, { Component } from 'react';
 
-import SignUp from '../SignUp'
-import Login from '../Login'
-import NavHeader from '../NavHeader'
-import { 
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink
-} from 'reactstrap';
-
-import { connect } from 'react-redux'
+import TripsComponent from '../Trips'
+import LoginComponent from '../Login'
 
 import './style.css';
-import axios from 'axios';
 
-function LoadingNav(props) {
-  if(!props.loaded) return null;
-  if(!props.result) {
-    return (
-      <Nav className="ml-auto" navbar>
-        <Login/><SignUp/>
-      </Nav>
-    )
-  }
-  return null;
-}
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
+
+import { connect } from 'react-redux'
+import { isLoggedIn } from '../../actions/authActions'
+
+import { userIsNotAuthenticated, userIsAuthenticated } from '../../auth'
+
+
+const Trips = userIsAuthenticated(TripsComponent);
+const Login = userIsNotAuthenticated(LoginComponent);
+
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      isOpen: false,
-      modal: false,
-      loaded: false,
-      result: false
-    }
-    this.checkIfLoggedIn();
-    this.toggle = this.toggle.bind(this);
-  }
-  async checkIfLoggedIn() {
-    try{
-      let result = await axios.get('http://localhost:8000/auth/loggedin');
-      if(result.data === 0) {
-        this.setState({
-          loaded: true,
-          result: false
-        });
-      }else{
-        this.setState({
-          loaded: true,
-          result: true
-        });
-      }
-    }catch(e){
-      this.setState({
-        loaded: true,
-        result: false
-      });
+  componentWillMount() {
+    if(this.props.token && !this.props.logged_in){
+      this.props.dispatch(isLoggedIn(this.props.token));
     }
   }
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.token && !nextProps.logged_in){
+      this.props.dispatch(isLoggedIn(nextProps.token));
+    }
   }
   render() {
     return (
-      <div>
-        <NavHeader/>
-        <div className="App">
-          <div className="App-header">
-            <h2>Trip Planner</h2>
-          </div>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
+      <BrowserRouter>
+        <div>
+          <NavHeader/>
+          <Switch>
+            <Route exact path="/" component={Login}/>
+            <Route path="/trips" component={Trips}/>
+          </Switch>
         </div>
-      </div>
+      </BrowserRouter>
     );
   }
 }
 
 export default connect((store) => {
   return {
-    
+    token: store.auth.token,
+    logged_in: store.auth.logged_in
   }
 })(App);

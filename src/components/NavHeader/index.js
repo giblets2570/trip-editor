@@ -17,12 +17,18 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink
+  NavItem
 } from 'reactstrap';
 
-import { connect } from 'react-redux'
+import {
+  BrowserRouter,
+  Route,
+  NavLink,
+  Link,
+  Switch 
+} from 'react-router-dom';
 
+import { connect } from 'react-redux'
 import { login } from '../../actions/authActions'
 
 class NavHeader extends Component {
@@ -50,7 +56,7 @@ class NavHeader extends Component {
   }
   login(e) {
     e.preventDefault();
-    this.props.dispatch(login());
+    this.props.dispatch(login(this.state.email,this.state.password));
     this.toggleModal();
   }
   handleChange(event,key) {
@@ -64,7 +70,7 @@ class NavHeader extends Component {
       navLinks = (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <NavLink href="#" onClick={this.toggleModal}>Login</NavLink>
+            <NavLink to="#" onClick={this.toggleModal}>Login</NavLink>
           </NavItem>
         </Nav>
       )
@@ -72,10 +78,10 @@ class NavHeader extends Component {
       navLinks = (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <NavLink href="/trips">Trips</NavLink>
+            <NavLink to="/trips">Trips</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink href="/account">My account</NavLink>
+            <NavLink to="/account">My account</NavLink>
           </NavItem>
         </Nav>
       )
@@ -84,7 +90,7 @@ class NavHeader extends Component {
       <div>
         <Navbar color="faded" light toggleable>
           <NavbarToggler right onClick={this.toggle} />
-          <NavbarBrand href="/">reactstrap</NavbarBrand>
+          <NavbarBrand to="/">reactstrap</NavbarBrand>
           <Collapse isOpen={this.state.toggled} navbar>
             {navLinks}
           </Collapse>
@@ -128,10 +134,8 @@ class NavHeader extends Component {
 
 export default connect((store) => {
   return {
-    isOpen: store.navHeader.isOpen,
-    modalOpen: store.navHeader.modalOpen,
     logging_in: store.auth.logging_in,
-    logged_in: !!store.auth.token,
-    sign_in: store.auth.logging_in,
+    logged_in: store.auth.logged_in,
+    sign_in: store.auth.sign_in,
   }
 })(NavHeader);

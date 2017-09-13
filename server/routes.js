@@ -32,7 +32,7 @@ function createRoute(name){
 }
 
 export default function(app) {
-  app.use('/auth',  AuthRoutes(User,Auth));
+  app.use('/auth',  AuthRoutes(config,User,Auth));
   app.use('/users', createRoute('user'));
   // Serve static assets
   // app.use(express.static(path.resolve(__dirname, '..', 'build')));

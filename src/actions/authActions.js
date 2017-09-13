@@ -1,9 +1,14 @@
-export function login() {
+import axios from 'axios';
+
+const domain = `http://localhost:8000/`;
+
+export function login(email, password) {
 	return {
-		type: "LOGIN_FULFILLED",
-		payload: {
-			"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OGE2Y2IyYjYxY2NmYTA5ZjFmOWM5NjUiLCJyb2xlIjoidXNlciIsImlhdCI6MTUwNTMwNDkzNiwiZXhwIjoxNTA1MzIyOTM2fQ.FlF7Huc6Vvt2VkA8dEsr83zqplgUojIHsY5TbPzTP7E"
-		}
+		type: "LOGIN",
+		payload: axios.post(`${domain}auth/login`,{
+			email: email,
+			password: password
+		})
 	}
 }
 
@@ -16,11 +21,14 @@ export function singup() {
 	}
 }
 
-export function isLoggedIn() {
+export function isLoggedIn(token) {
+	console.log(token);
 	return {
-		type: "CHECK_LOGGED_IN_FULFILLED",
-		payload: {
-			"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OGE2Y2IyYjYxY2NmYTA5ZjFmOWM5NjUiLCJyb2xlIjoidXNlciIsImlhdCI6MTUwNTMwNDkzNiwiZXhwIjoxNTA1MzIyOTM2fQ.FlF7Huc6Vvt2VkA8dEsr83zqplgUojIHsY5TbPzTP7E"
-		}
+		type: "CHECK_LOGGED_IN",
+		payload: axios.get(`${domain}auth/loggedin`,{
+			headers: {
+				'Authorization': token
+			}
+		})
 	}
 }

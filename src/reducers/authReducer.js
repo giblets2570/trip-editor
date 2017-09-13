@@ -3,22 +3,25 @@ export default function reducer(state={
 	role: null,
 	checking_logged_in: false,
 	logging_in: false,
+	logged_in: false,
 	signing_up: false,
 	error: null
 }, action) {
 	switch(action.type) {
-		case "LOGIN": {
+		case "LOGIN_PENDING": {
 			return {...state, logging_in: true};
 		}
 		case "LOGIN_REJECTED": {
 			return {...state, logging_in: false, error: action.payload};
 		}
 		case "LOGIN_FULFILLED": {
+			console.log(action.payload);
 			return {
 				...state, 
 				logging_in: false,
-				token: action.payload.token,
-				role: action.payload.role
+				error: null,
+				token: action.payload.data.token,
+				role: action.payload.data.role
 			}
 		}
 		case "SIGNUP": {
@@ -31,8 +34,8 @@ export default function reducer(state={
 			return {
 				...state, 
 				signing_up: false,
-				token: action.payload.token,
-				role: action.payload.role
+				token: action.payload.data.token,
+				role: action.payload.data.role
 			}
 		}
 		case "CHECK_LOGGED_IN": {
@@ -45,8 +48,10 @@ export default function reducer(state={
 			return {
 				...state, 
 				checking_logged_in: false,
-				token: action.payload.token,
-				role: action.payload.role
+				logged_in: true,
+				error: null,
+				token: action.payload.data.token,
+				role: action.payload.data.role
 			}
 		}
 		default: {
