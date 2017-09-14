@@ -3,10 +3,12 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 
 import { 
-  Card, CardText, CardBlock, CardTitle, 
-  CardSubtitle, Button, Tooltip, Form, 
+  Card, CardText, CardBlock, CardTitle, CardHeader,
+  CardSubtitle, Button, Tooltip, Form, CardFooter,
   FormGroup, Label, Input
 } from 'reactstrap'
+
+import CreateTrip from '../CreateTrip'
 
 import './style.css'
 
@@ -18,21 +20,22 @@ function daysBetween(date1, date2) {
   return (date1.valueOf() - date2.valueOf()) / (1000 * 60 * 60 * 24);
 }
 
+
 class TripCard extends Component {
   constructor() {
     super();
     this.state = {
-      editingDestination: false,
+      editing: false,
       tooltipOpen: false
     }
     this.toggle = this.toggle.bind(this);
     this.update = this.update.bind(this);
-    this.toggleEditDestination = this.toggleEditDestination.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
   }
-  toggleEditDestination(){
+  toggleEdit(){
     this.state.destination = this.props.trip.destination;
     this.setState({
-      editingDestination: !this.state.editingDestination
+      editing: !this.state.editing
     })
   }
   toggle() {
@@ -45,12 +48,15 @@ class TripCard extends Component {
       [key]: event.target.value
     });
   }
+  edit() {
+
+  }
   update(e) {
     e.preventDefault();
     let updated = {};
-    if(this.state.editingDestination) {
+    if(this.state.editing) {
       updated.destination = this.state.destination;
-      this.toggleEditDestination();
+      this.toggleEdit();
     }
     this.props.dispatch(update(this.props.trip._id, updated));
   }
@@ -59,59 +65,23 @@ class TripCard extends Component {
 
     let daysUntilCard;
     if(daysUntil > 0) {
-      daysUntilCard = <CardSubtitle>{daysUntil} days to go!</CardSubtitle>;
+      daysUntilCard = <CardTitle>{daysUntil} days to go!</CardTitle>;
     }else if(daysUntil < 0){
-      daysUntilCard = <CardSubtitle>Started {-daysUntil} days ago!</CardSubtitle>;
+      daysUntilCard = <CardTitle>Started {-daysUntil} days ago!</CardTitle>;
     }else{
-      daysUntilCard = <CardSubtitle>It's happenning today!</CardSubtitle>;
+      daysUntilCard = <CardTitle>It's happenning today!</CardTitle>;
     }
-
-    
-
-    let title;
-    if(this.state.editingDestination){
-      title = (
-        <Form onSubmit={this.update}>
-          <FormGroup>
-            <Label 
-              for="Destination">Destination</Label>
-            <Input
-              type="text"
-              value={this.state.destination}
-              name="destination"
-              id="Destination"
-              onChange={(e) => this.handleChange(e, 'destination')}
-              placeholder="Paris" />
-          </FormGroup>
-          <Button>
-            Save
-          </Button> 
-          <Button onClick={this.toggleEditDestination}>
-            Cancel
-          </Button>
-        </Form>
-      )
-    }else{
-      title = (
-        <CardTitle onClick={this.toggleEditDestination}>
-          <span id="DisabledAutoHideExample">{this.props.trip.destination}</span>
-          <Tooltip placement="top" isOpen={this.state.tooltipOpen} autohide={true} target="DisabledAutoHideExample" toggle={this.toggle}>
-            Click to edit destination
-          </Tooltip>
-        </CardTitle>
-      )
-    }
-
     return (
       <div>
         <Card className="card">
+          <CardHeader tag="h3">{this.props.trip.destination}</CardHeader>
           <CardBlock>
-            {title}
             {daysUntilCard}
             <CardText>{this.props.trip.comments}</CardText>
-            <Button>Button</Button>
           </CardBlock>
+          <CardFooter><Button onClick={this.toggleEdit}>Edit</Button></CardFooter>
         </Card>
+        <CreateTrip isOpen={this.state.editing} toggle={this.toggleEdit} trip={this.props.trip}/>
       </div>
     );
   }

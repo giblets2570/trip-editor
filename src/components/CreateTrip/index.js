@@ -1,42 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
+import moment from 'moment'
+
 import { 
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Form,
-  FormGroup,
-  Input,
-  Label
+  Modal, ModalHeader, ModalBody,
+  ModalFooter, Button, Form,
+  FormGroup, Input, Label
 } from 'reactstrap';
 
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 
-import { create } from '../../actions/tripsActions'
+import { create, update } from '../../actions/tripsActions'
 
 class Trips extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       toggled: false,
       isOpen: false,
-      startDate: null,
-      endDate: null,
-      destination: "",
-      comments: ""
+      startDate:    this.props.trip ? moment(this.props.trip.startDate) : null,
+      endDate:      this.props.trip ? moment(this.props.trip.endDate) : null,
+      destination:  this.props.trip ? this.props.trip.destination : "",
+      comments:     this.props.trip ? this.props.trip.comments : ""
     }
     this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.save = this.save.bind(this);
   }
   handleChange(event,key) {
     this.setState({
       [key]: event.target.value
     });
   }
-  create(e){
+  save(e){
     e.preventDefault();
+    if(this.props.trip && this.props.trip._id){
+      this.update();
+    }else{
+      this.create();
+    }
+  }
+  create(){
     this.props.dispatch(create({
       startDate: this.state.startDate,
       endDate: this.state.endDate,
@@ -45,12 +50,22 @@ class Trips extends Component {
     }));
     this.props.toggle();
   }
+  update(){
+    this.props.dispatch(update(this.props.trip._id, {
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      destination: this.state.destination,
+      comments: this.state.comments
+    }));
+    this.props.toggle();
+  }
   render(){
+    const header = this.props.trip ? "Editing trip" : "Create a trip";
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>Create a trip</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>{header}</ModalHeader>
         <ModalBody>
-          <Form onSubmit={this.create}>
+          <Form onSubmit={this.save}>
             <FormGroup>
               <Label 
                 for="Destination">Destination</Label>
