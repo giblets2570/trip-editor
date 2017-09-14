@@ -58,6 +58,7 @@
     "react-addons-css-transition-group": "^15.6.0",
     "react-addons-shallow-compare": "^15.6.0",
     "react-addons-transition-group": "^15.6.0",
+    "react-alert": "^2.3.0",
     "react-dates": "^12.6.0",
     "react-dom": "^15.6.1",
     "react-loading": "^0.1.4",

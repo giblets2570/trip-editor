@@ -2,13 +2,24 @@ import axios from './request.service';
 
 const domain = `http://localhost:8000/`;
 
-export function login(email, password) {
+export function toggle() {
+	return {
+		type: "TOGGLE_LOGIN",
+		payload: null
+	}
+}
+
+export function login(details) {
 	return {
 		type: "LOGIN",
-		payload: axios.post(`${domain}auth/login`,{
-			email: email,
-			password: password
-		})
+		payload: axios.post(`${domain}auth/login`, details)
+	}
+}
+
+export function passwordWrong() {
+	return {
+		type: "PASSWORD_WRONG",
+		payload: null
 	}
 }
 
@@ -19,18 +30,22 @@ export function logout() {
 	}
 }
 
-export function singup() {
+export function signup(user) {
 	return {
-		type: "SIGNUP_FULFILLED",
-		payload: {
-			"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OGE2Y2IyYjYxY2NmYTA5ZjFmOWM5NjUiLCJyb2xlIjoidXNlciIsImlhdCI6MTUwNTMwNDkzNiwiZXhwIjoxNTA1MzIyOTM2fQ.FlF7Huc6Vvt2VkA8dEsr83zqplgUojIHsY5TbPzTP7E"
-		}
+		type: "SIGNUP",
+		payload: axios.post(`${domain}users`, user)
 	}
 }
 
 export function isLoggedIn() {
-	return {
-		type: "CHECK_LOGGED_IN",
-		payload: axios.get(`${domain}auth/loggedin`)
+	if(localStorage.token && localStorage.token !== 'null'){
+		return {
+			type: "CHECK_LOGGED_IN",
+			payload: axios.get(`${domain}auth/loggedin`)
+		}
+	}else{
+		return { type: "NULL"}
 	}
 }
+
+

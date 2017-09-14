@@ -9,11 +9,13 @@ module.exports = (config, User, Auth) => {
     usernameField: 'email',
     passwordField: 'password'
   }, (username, password, done) => {
-    User.findOne({email:username}, (err,user) => {
+    User.findOne({email:username}, (err, user) => {
       if(err)
-        return done(null, false, { message: 'Error in request.' });
+        return done(null, false, { message: 'Error in request' });
       if(!user)
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: 'Incorrect username' });
+      // if(!user.authenticate(password))
+      //   return done(null, false, { message: 'Incorrect password' });
       return done(null, user);
     });
   }));
@@ -27,7 +29,7 @@ module.exports = (config, User, Auth) => {
         return res.status(401).json(error);
       }
       if (!user) {
-        return res.status(404).json({message: 'Something went wrong, please try again.'});
+        return res.status(404).json({message: 'Something went wrong, please try again'});
       }
       var token = Auth.signToken(user._id, user.role);
       res.json({ token, user: user.profile });

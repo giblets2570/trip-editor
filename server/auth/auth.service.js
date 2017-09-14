@@ -30,7 +30,8 @@ module.exports = function(config,User){
         User.findById(req.user._id).exec()
           .then(user => {
             if (!user) {
-              return res.status(401).end();
+              throw {message: "You aren't authenticated to view this"}
+              // return res.status(401).json({message: "You aren't authenticated to view this"});
             }
             req.user = user;
             next();
@@ -56,11 +57,10 @@ module.exports = function(config,User){
     return compose()
       .use(isAuthenticated())
       .use(function(req, res, next) {
-        console.log("hasRole", req.user);
         if (meetsRequirements(req.user, roleRequired)) {
           next();
         } else {
-          res.status(403).send('Forbidden');
+          res.status(403).json({message: "You don't meet the requirements"});
         }
       });
   }

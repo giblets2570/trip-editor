@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import AlertContainer from 'react-alert'
+
 
 import TripsComponent from '../Trips'
-import LoginComponent from '../Login'
+import HomeComponent from '../Home'
 
 import './style.css';
 
@@ -12,30 +14,52 @@ import { isLoggedIn } from '../../actions/authActions'
 
 import { userIsNotAuthenticated, userIsAuthenticated } from '../../auth'
 
-
 const Trips = userIsAuthenticated(TripsComponent);
-const Login = userIsNotAuthenticated(LoginComponent);
+const Home = userIsNotAuthenticated(HomeComponent);
 
 class App extends Component {
+  alertOptions = {
+    offset: 14,
+    position: 'bottom left',
+    theme: 'dark',
+    time: 5000,
+    transition: 'scale'
+  }
   componentWillMount() {
     this.props.dispatch(isLoggedIn());
   }
+  componentWillReceiveProps(newProps) {
+    console.log(newProps.error);
+    if(newProps.error) {
+      this.showAlert(newProps.error.message);
+    }
+  }
+  showAlert(text){
+    this.msg.show(text, {
+      time: 2000,
+      type: 'error'
+    })
+  }
   render() {
     return (
-      <BrowserRouter className="App">
-        <div>
-          <Switch>
-            <Route exact path="/" component={Login}/>
-            <Route path="/trips" component={Trips}/>
-          </Switch>
-        </div>
-      </BrowserRouter>
+      <div>
+        <BrowserRouter className="App">
+          <div>
+            <Switch>
+              <Route exact path="/" component={Home}/>
+              <Route path="/trips" component={Trips}/>
+            </Switch>
+          </div>
+        </BrowserRouter>
+        <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+      </div>
     );
   }
 }
 
 export default connect((store) => {
   return {
-    logged_in: store.auth.logged_in
+    logged_in: store.auth.logged_in,
+    error: store.auth.error
   }
 })(App);

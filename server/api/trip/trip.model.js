@@ -9,7 +9,11 @@ TripModel.schema = {
 	destination: String,
 	comments: String,
 	startDate: Date,
-	endDate: Date
+	endDate: Date,
+	user: {
+		type: Mongo.ObjectId,
+		ref: 'User'
+	}
 }
 
 

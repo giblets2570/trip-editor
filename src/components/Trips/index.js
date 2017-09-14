@@ -54,26 +54,24 @@ class Trips extends Component {
   }
   render(){
     const trips = this.props.trips.map((trip, key) => {
-      console.log(trip);
       return (
         <div key={key}>
           <TripCard trip={trip}/>
         </div>
       )
     })
-    console.log(trips);
     return (
       <div>
         <Navbar color="faded" light toggleable>
           <NavbarToggler right onClick={this.toggle} />
-          <NavbarBrand to="#">Hi {this.props.user.email}</NavbarBrand>
+          <NavbarBrand to="#">Hi {this.props.user.name}</NavbarBrand>
           <Collapse isOpen={this.state.toggled} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink onClick={this.toggleModal}>Create Trip</NavLink>
+                <NavLink href="#" onClick={this.toggleModal}>Create Trip</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={this.logout}>Logout</NavLink>
+                <NavLink href="#" onClick={this.logout}>Logout</NavLink>
               </NavItem>
             </Nav>
           </Collapse>

@@ -80,16 +80,17 @@ class UserModel extends Model {
 			return null;
 		}
 
-		var defaultIterations = 10000;
-		var defaultKeyLength = 64;
-		var salt = new Buffer(this.salt, 'base64');
+		const defaultIterations = 10000;
+		const defaultKeyLength = 64;
+		const salt = new Buffer(this.salt, 'base64');
+		const digest = 'sha1';
 
 		if (!callback) {
-			return crypto.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength)
+			return crypto.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength, digest)
 			.toString('base64');
 		}
 
-		return crypto.pbkdf2(password, salt, defaultIterations, defaultKeyLength, (err, key) => {
+		return crypto.pbkdf2(password, salt, defaultIterations, defaultKeyLength, digest, (err, key) => {
 			if (err) {
 				callback(err);
 			} else {
@@ -101,7 +102,8 @@ class UserModel extends Model {
 	get profile() {
 		return {
 			email: this.email,
-			role: this.role
+			role: this.role,
+			name: this.name
 		}
 	}
 }
