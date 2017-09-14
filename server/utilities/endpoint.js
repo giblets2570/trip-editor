@@ -75,6 +75,7 @@ class Endpoint {
     let data = req.body;
     try {
       object = await this.service.update(id,data)
+      console.log(object);
     } catch(error) {
       return this.sendError(res,error);
     }
@@ -83,7 +84,7 @@ class Endpoint {
         message: `No existing object found for id ${id}`
       });
     }
-    res.status(200).send(object);
+    res.status(200).json(object);
   }
 
   async destroy(req, res) {

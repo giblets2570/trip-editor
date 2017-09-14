@@ -2,8 +2,11 @@ import axios from './request.service';
 
 const domain = `http://localhost:8000/`;
 
-function axiosWrapper(axios) {
-
+export function fetch(trip) {
+	return {
+		type: "FETCH_TRIPS",
+		payload: axios.get(`${domain}trips`)
+	}
 }
 
 export function create(trip) {
@@ -13,9 +16,9 @@ export function create(trip) {
 	}
 }
 
-export function fetch(trip) {
+export function update(id, trip) {
 	return {
-		type: "FETCH_TRIPS",
-		payload: axios.get(`${domain}trips`)
+		type: "UPDATE_TRIP",
+		payload: axios.put(`${domain}trips/${id}`, trip)
 	}
 }
