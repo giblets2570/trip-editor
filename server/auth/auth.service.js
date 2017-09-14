@@ -32,7 +32,6 @@ module.exports = function(config,User){
             if (!user) {
               return res.status(401).end();
             }
-            console.log('Authenticated',user.name,'with role',user.role)
             req.user = user;
             next();
           })

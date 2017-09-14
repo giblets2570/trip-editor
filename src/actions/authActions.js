@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './request.service';
 
 const domain = `http://localhost:8000/`;
 
@@ -31,10 +31,6 @@ export function singup() {
 export function isLoggedIn() {
 	return {
 		type: "CHECK_LOGGED_IN",
-		payload: axios.get(`${domain}auth/loggedin`, {
-			headers: {
-				'Authorization': localStorage.token
-			}
-		})
+		payload: axios.get(`${domain}auth/loggedin`)
 	}
 }
