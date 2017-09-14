@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux'
 
+import moment from 'moment';
+
 import {
   Collapse,
   Navbar,
@@ -29,6 +31,7 @@ class Trips extends Component {
     }
     this.logout = this.logout.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.printMonth = this.printMonth.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
   }
   componentWillMount(){
@@ -39,7 +42,15 @@ class Trips extends Component {
       [key]: event.target.value
     });
   }
-  toggleModal(){
+  printMonth() {
+    const now = moment();
+    const nextMonth = moment(now).add(1, 'months');
+    const trips = this.props.trips.filter((trip) => {
+      let date = moment(trip.startDate);
+      return date.isBetween(now, nextMonth);
+    });
+  }
+  toggleModal() {
     this.setState({
       modal: !this.state.modal
     })
@@ -49,17 +60,19 @@ class Trips extends Component {
       toggled: !this.state.toggled
     })
   }
-  logout(){
+  logout() {
     this.props.dispatch(logout());
   }
-  render(){
-    const trips = this.props.trips.map((trip, key) => {
+  render() {
+    const trips = this.props.trips
+    .sort((a,b) => new Date(a.startDate) > new Date(b.startDate))
+    .map((trip, key) => {
       return (
         <div key={key}>
           <TripCard trip={trip}/>
         </div>
       )
-    })
+    });
     return (
       <div>
         <Navbar color="faded" light toggleable>
@@ -67,6 +80,9 @@ class Trips extends Component {
           <NavbarBrand to="#">Hi {this.props.user.name}</NavbarBrand>
           <Collapse isOpen={this.state.toggled} navbar>
             <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink href="#" onClick={this.printMonth}>Print Month</NavLink>
+              </NavItem>
               <NavItem>
                 <NavLink href="#" onClick={this.toggleModal}>Create Trip</NavLink>
               </NavItem>
