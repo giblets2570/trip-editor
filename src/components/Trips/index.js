@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import windowSize from 'react-window-size';
 import moment from 'moment'
 
 import {
@@ -74,11 +75,15 @@ class Trips extends Component {
     this.props.dispatch(logout());
   }
   render() {
-    let trips = this.props.filters.destination ? 
-      this.props.trips.filter((trip) => {
+    let trips = this.state.hidePast ?
+      this.props.trips.filter((trip) => moment().isAfter(trip.startDate)) :
+      this.props.trips.slice(0);
+
+    trips = this.props.filters.destination ? 
+      trips.filter((trip) => {
         return trip.destination.toLowerCase().indexOf(this.props.filters.destination.toLowerCase()) !== -1
       }) :
-      this.props.trips.slice(0);
+      trips.slice(0);
 
     trips = this.props.filters.startDate ? 
       trips.filter((trip) => moment(trip.startDate).isSameOrAfter(this.props.filters.startDate)) :
@@ -119,9 +124,9 @@ class Trips extends Component {
         <CreateTrip isOpen={this.state.modal} toggle={this.toggleModal}/>
         <Container className='tripsBody'>
           <Row>
-            <Col lg="6" xs="12">
+            <Col lg="4" xs="12">
               <Label 
-                for="Destination">Filter by destination</Label>
+                for="Destination">Search for your destination</Label>
               <Input
                 type="text"
                 value={this.props.filters.destination}
@@ -130,9 +135,9 @@ class Trips extends Component {
                 onChange={(e) => this.handleChange(e)}
                 placeholder="Paris" />
             </Col>
-            <Col lg="6" xs="12">
+            <Col lg="4" xs="12">
               <Label 
-                for="Range">Only show start dates between</Label>
+                for="Range">Only show trips that start between dates</Label>
               <br/>
               <DateRangePicker
                 startDate={this.props.filters.startDate} // momentPropTypes.momentObj or null,
@@ -141,7 +146,17 @@ class Trips extends Component {
                 onDatesChange={({ startDate, endDate }) => this.updateDates(startDate, endDate)} // PropTypes.func.isRequired,
                 focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                withFullScreenPortal={this.props.windowWidth < 768}
+                orientation={this.props.windowWidth < 768 ? "vertical" : "horizontal"}
               />
+            </Col>
+            <Col lg="4" xs="12">
+              <Label check>
+                <Input 
+                  type="checkbox" 
+                  onClick={() => this.setState({hidePast: !this.state.hidePast})}/>{' '}
+                Hide trips that are in the past
+              </Label>
             </Col>
           </Row>
           {trips}
@@ -157,4 +172,4 @@ export default connect((store) => {
     trips: store.trips.trips,
     filters: store.trips.filters
   }
-})(Trips);
+})(windowSize(Trips));

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-
+import windowSize from 'react-window-size';
 import moment from 'moment'
 
 import { 
   Modal, ModalHeader, ModalBody,
-  ModalFooter, Button, Form,
+  Button, Form,
   FormGroup, Input, Label
 } from 'reactstrap';
 
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 
 import { create, update } from '../../actions/tripsActions'
 
@@ -87,6 +87,8 @@ class Trips extends Component {
                 onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
                 focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                withFullScreenPortal={this.props.windowWidth < 768}
+                orientation={this.props.windowWidth < 768 ? "vertical" : "horizontal"}
               />
             </FormGroup>
             <FormGroup>
@@ -110,4 +112,4 @@ class Trips extends Component {
   }
 }
 
-export default connect()(Trips);
+export default connect()(windowSize(Trips));

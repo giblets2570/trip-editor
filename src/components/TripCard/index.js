@@ -3,15 +3,12 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 
 import { 
-  Card, CardText, CardBlock, CardTitle, CardHeader,
-  CardSubtitle, Button, CardFooter
+  Card, CardText, CardBlock, CardTitle, CardHeader, Button, CardFooter
 } from 'reactstrap'
 
 import CreateTrip from '../CreateTrip'
 
 import './style.css'
-
-import { update } from '../../actions/tripsActions'
 
 function daysBetween(date1, date2) {
   date1 = new Date(new Date(date1).toDateString());
@@ -23,40 +20,15 @@ class TripCard extends Component {
   constructor() {
     super();
     this.state = {
-      editing: false,
-      tooltipOpen: false
+      editing: false
     }
-    this.toggle = this.toggle.bind(this);
-    this.update = this.update.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
   }
   toggleEdit(){
-    this.state.destination = this.props.trip.destination;
     this.setState({
+      destination: this.props.trip.destination,
       editing: !this.state.editing
     })
-  }
-  toggle() {
-    this.setState({
-      tooltipOpen: !this.state.tooltipOpen
-    });
-  }
-  handleChange(event,key) {
-    this.setState({
-      [key]: event.target.value
-    });
-  }
-  edit() {
-
-  }
-  update(e) {
-    e.preventDefault();
-    let updated = {};
-    if(this.state.editing) {
-      updated.destination = this.state.destination;
-      this.toggleEdit();
-    }
-    this.props.dispatch(update(this.props.trip._id, updated));
   }
   render() {
     const daysUntil = daysBetween(this.props.trip.startDate, new Date());

@@ -3,3 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.DateRangePicker__picker {
+	z-index: 2000;
+}
