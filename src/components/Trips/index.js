@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
-import moment from 'moment';
+import moment from 'moment'
 
 import {
   Collapse,
@@ -11,16 +9,23 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink
-} from 'reactstrap';
+  NavLink,
+  Container,
+  Row,
+  Col,
+  Input,
+  Label
+} from 'reactstrap'
+
+import './style.css'
 
 import CreateTrip from '../CreateTrip'
 import TripCard from '../TripCard'
 
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates'
 
 import { logout } from '../../actions/authActions'
-import { fetch } from '../../actions/tripsActions'
+import { fetch, updateFilters } from '../../actions/tripsActions'
 
 class Trips extends Component {
   constructor(){
@@ -33,14 +38,10 @@ class Trips extends Component {
     this.toggle = this.toggle.bind(this);
     this.printMonth = this.printMonth.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.updateDates = this.updateDates.bind(this);
   }
   componentWillMount(){
     this.props.dispatch(fetch());
-  }
-  handleChange(event,key) {
-    this.setState({
-      [key]: event.target.value
-    });
   }
   printMonth() {
     const now = moment();
@@ -49,11 +50,20 @@ class Trips extends Component {
       let date = moment(trip.startDate);
       return date.isBetween(now, nextMonth);
     });
+    console.log(trips);
   }
   toggleModal() {
     this.setState({
       modal: !this.state.modal
     })
+  }
+  handleChange(event,key) {
+    const newFilters = {...this.props.filters, destination: event.target.value}
+    this.props.dispatch(updateFilters(newFilters))
+  }
+  updateDates(startDate, endDate) {
+    const newFilters = {...this.props.filters, startDate, endDate}
+    this.props.dispatch(updateFilters(newFilters))
   }
   toggle() {
     this.setState({
@@ -64,7 +74,21 @@ class Trips extends Component {
     this.props.dispatch(logout());
   }
   render() {
-    const trips = this.props.trips
+    let trips = this.props.filters.destination ? 
+      this.props.trips.filter((trip) => {
+        return trip.destination.toLowerCase().indexOf(this.props.filters.destination.toLowerCase()) !== -1
+      }) :
+      this.props.trips.slice(0);
+
+    trips = this.props.filters.startDate ? 
+      trips.filter((trip) => moment(trip.startDate).isSameOrAfter(this.props.filters.startDate)) :
+      trips.slice(0);
+
+    trips = this.props.filters.endDate ? 
+      trips.filter((trip) => moment(trip.startDate).isSameOrBefore(this.props.filters.endDate)) :
+      trips.slice(0);
+
+    trips = trips
     .sort((a,b) => new Date(a.startDate) > new Date(b.startDate))
     .map((trip, key) => {
       return (
@@ -93,7 +117,35 @@ class Trips extends Component {
           </Collapse>
         </Navbar>
         <CreateTrip isOpen={this.state.modal} toggle={this.toggleModal}/>
-        {trips}
+        <Container className='tripsBody'>
+          <Row>
+            <Col lg="6" xs="12">
+              <Label 
+                for="Destination">Filter by destination</Label>
+              <Input
+                type="text"
+                value={this.props.filters.destination}
+                name="destinationFilter"
+                id="Destination"
+                onChange={(e) => this.handleChange(e)}
+                placeholder="Paris" />
+            </Col>
+            <Col lg="6" xs="12">
+              <Label 
+                for="Range">Only show start dates between</Label>
+              <br/>
+              <DateRangePicker
+                startDate={this.props.filters.startDate} // momentPropTypes.momentObj or null,
+                endDate={this.props.filters.endDate} // momentPropTypes.momentObj or null,
+                displayFormat="DD/MM/YYYY"
+                onDatesChange={({ startDate, endDate }) => this.updateDates(startDate, endDate)} // PropTypes.func.isRequired,
+                focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+              />
+            </Col>
+          </Row>
+          {trips}
+        </Container>
       </div>
     )
   }
@@ -102,6 +154,7 @@ class Trips extends Component {
 export default connect((store) => {
   return {
     user: store.auth.user,
-    trips: store.trips.trips
+    trips: store.trips.trips,
+    filters: store.trips.filters
   }
 })(Trips);

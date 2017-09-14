@@ -22,3 +22,10 @@ export function update(id, trip) {
 		payload: axios.put(`${domain}trips/${id}`, trip)
 	}
 }
+
+export function updateFilters(newFilters) {
+	return {
+		type: "UPDATE_FILTERS",
+		payload: newFilters
+	}
+}

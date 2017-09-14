@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 
 import { 
   Card, CardText, CardBlock, CardTitle, CardHeader,
-  CardSubtitle, Button, Tooltip, Form, CardFooter,
-  FormGroup, Label, Input
+  CardSubtitle, Button, CardFooter
 } from 'reactstrap'
 
 import CreateTrip from '../CreateTrip'
@@ -19,7 +18,6 @@ function daysBetween(date1, date2) {
   date2 = new Date(new Date(date2).toDateString());
   return (date1.valueOf() - date2.valueOf()) / (1000 * 60 * 60 * 24);
 }
-
 
 class TripCard extends Component {
   constructor() {
@@ -61,7 +59,7 @@ class TripCard extends Component {
     this.props.dispatch(update(this.props.trip._id, updated));
   }
   render() {
-    const daysUntil = daysBetween(new Date(), this.props.trip.startDate);
+    const daysUntil = daysBetween(this.props.trip.startDate, new Date());
 
     let daysUntilCard;
     if(daysUntil > 0) {

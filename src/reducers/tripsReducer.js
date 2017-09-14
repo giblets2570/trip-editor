@@ -1,5 +1,10 @@
 export default function reducer(state={
 	trips: [],
+	filters: {
+		destination: "",
+		startDate: null,
+		endDate: null,
+	},
 	loading: false,
 	error: null
 }, action) {
@@ -27,6 +32,9 @@ export default function reducer(state={
 				return trip;
 			});
 			return {...state, trips: updatedTrips}
+		}
+		case "UPDATE_FILTERS": {
+			return {...state, filters: action.payload}
 		}
 		case "FETCH_TRIPS_PENDING": {
 			return {...state, loading: true};
