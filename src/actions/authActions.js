@@ -44,6 +44,13 @@ export function create(user) {
 	}
 }
 
+export function remove(id) {
+	return {
+		type: "REMOVE_USER",
+		payload: axios.delete(`${domain}users/${id}`)
+	}
+}
+
 export function update(id,user) {
 	for(let key of Object.keys(user)){
 		if(!user[key]){

@@ -128,6 +128,19 @@ export default function reducer(state={
 		case "FETCH_USERS_FULFILLED": {
 			return { ...state,users: action.payload.data }
 		}
+		case "REMOVE_USER_PENDING": {
+			return {...state, loading: true};
+		}
+		case "REMOVE_USER_REJECTED": {
+			return {...state, loading: false, error: action.payload.data};
+		}
+		case "REMOVE_USER_FULFILLED": {
+			const newUsers = state.users.filter((user) => user._id !== action.payload.data._id);
+			return {
+				...state, 
+				users: newUsers
+			}
+		}
 		default: {
 			break;
 		}

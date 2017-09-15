@@ -32,7 +32,6 @@ function Auth(config, User) {
             .then(user => {
               if (!user) {
                 throw {message: "You aren't authenticated to view this"}
-                // return res.status(401).json({message: "You aren't authenticated to view this"});
               }
               req.user = user;
               next();

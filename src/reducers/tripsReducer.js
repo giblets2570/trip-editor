@@ -40,8 +40,6 @@ export default function reducer(state={
 			return {...state, loading: false, error: action.payload.data};
 		}
 		case "REMOVE_TRIP_FULFILLED": {
-			console.log(state.trips);
-			console.log(action.payload);
 			const newTrips = state.trips.filter((trip) => trip._id !== action.payload.data._id);
 			return {
 				...state, 

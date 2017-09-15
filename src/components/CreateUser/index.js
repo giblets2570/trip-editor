@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 
 import { DateRangePicker } from 'react-dates';
-import { passwordWrong, create, update } from '../../actions/authActions'
+import { passwordWrong, create, update, remove } from '../../actions/authActions'
 
 class CreateUser extends Component {
   constructor(props){
@@ -25,6 +25,7 @@ class CreateUser extends Component {
     this.submit = this.submit.bind(this);
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
+    this.remove = this.remove.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -63,8 +64,20 @@ class CreateUser extends Component {
       this.props.dispatch(update(this.props.user._id,this.state));
     }
   }
+  remove(){
+    this.props.dispatch(remove(this.props.user._id));
+    this.props.toggle();
+  }
   render(){
     const header = this.props.user ? "Editing user" : "Create a user";
+    let deleteButton = null;
+    if(this.props.user) {
+      deleteButton = (
+        <Button onClick={this.remove}>
+          Delete
+        </Button>
+      )
+    }
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
         <ModalHeader toggle={this.props.toggle}>{header}</ModalHeader>
@@ -117,6 +130,7 @@ class CreateUser extends Component {
             <Button>
               Submit
             </Button>
+            {deleteButton}
           </Form>
         </ModalBody>
       </Modal>
