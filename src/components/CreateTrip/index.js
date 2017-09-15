@@ -31,10 +31,11 @@ class Trips extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      startDate:    this.props.trip ? moment(this.props.trip.startDate) : null,
-      endDate:      this.props.trip ? moment(this.props.trip.endDate) : null,
-      destination:  this.props.trip ? this.props.trip.destination : "",
-      comments:     this.props.trip ? this.props.trip.comments : ""
+      startDate:    nextProps.trip ? moment(nextProps.trip.startDate) : null,
+      endDate:      nextProps.trip ? moment(nextProps.trip.endDate) : null,
+      destination:  nextProps.trip ? nextProps.trip.destination : "",
+      comments:     nextProps.trip ? nextProps.trip.comments : "",
+      user:         nextProps.for 
     })
   }
   handleChange(event,key) {
@@ -51,21 +52,11 @@ class Trips extends Component {
     }
   }
   create(){
-    this.props.dispatch(create({
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-      destination: this.state.destination,
-      comments: this.state.comments
-    }));
+    this.props.dispatch(create(this.state));
     this.props.toggle();
   }
   update(){
-    this.props.dispatch(update(this.props.trip._id, {
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-      destination: this.state.destination,
-      comments: this.state.comments
-    }));
+    this.props.dispatch(update(this.props.trip._id, this.state));
     this.props.toggle();
   }
   remove(){
@@ -134,4 +125,6 @@ class Trips extends Component {
   }
 }
 
-export default connect()(windowSize(Trips));
+export default connect((store) => {
+  return store
+})(windowSize(Trips));

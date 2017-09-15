@@ -112,7 +112,7 @@ class Login extends Component {
 
     return (
       <div>
-        <Navigation></Navigation>
+        <Navigation match={this.props.match}></Navigation>
         <div className="login">
           <h3>{header}</h3>
           <Form onSubmit={this.submit}>

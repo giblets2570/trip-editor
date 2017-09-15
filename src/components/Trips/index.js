@@ -55,7 +55,7 @@ class Trips extends Component {
     }
   }
   render() {
-
+    console.log(this.props);
     let ifAdmin = null;
 
     if(this.props.user.role == 'admin'){
@@ -94,7 +94,7 @@ class Trips extends Component {
     });
     return (
       <div>
-        <Navigation pathname={this.props.location.pathname}></Navigation>
+        <Navigation match={this.props.match}></Navigation>
         {ifAdmin}
         <Container className='tripsBody'>
           <Row>

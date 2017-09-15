@@ -23,7 +23,7 @@ class Users extends Component {
     console.log(this.props);
     return (
       <div>
-        <Navigation pathname={this.props.location.pathname}></Navigation>
+        <Navigation match={this.props.match}></Navigation>
         <div className="usersBody">
           {users}
         </div>

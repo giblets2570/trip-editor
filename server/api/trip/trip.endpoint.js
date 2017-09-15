@@ -12,7 +12,7 @@ class TripEndpoint extends Endpoint {
   	}
 
   	async create(req, res) {
-  		req.body.user = req.user._id;
+  		if(!req.body.user) req.body.user = req.user._id;
 		return super.create(req, res);
 	}
 

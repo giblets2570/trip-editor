@@ -37,7 +37,6 @@ class Navigation extends Component {
       let date = moment(trip.startDate);
       return date.isBetween(now, nextMonth);
     });
-    console.log(trips);
   }
   toggleTripModal() {
     this.setState({
@@ -73,8 +72,8 @@ class Navigation extends Component {
         break;
       }
       case "admin": {
-        if(this.props.pathname){
-          if(this.props.pathname.indexOf('trips') !== -1){
+        if(this.props.match){
+          if(this.props.match.path.indexOf('trips') !== -1){
             navItems.push(<NavLink href="#" onClick={this.toggleTripModal}>Create Trip</NavLink>);
           }else{
             navItems.push(<NavLink href="#" onClick={this.toggleUserModal}>Create User</NavLink>);
@@ -103,7 +102,7 @@ class Navigation extends Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <CreateTrip isOpen={this.state.tripModal} toggle={this.toggleTripModal}/>
+        <CreateTrip isOpen={this.state.tripModal} toggle={this.toggleTripModal} for={this.props.match.params.id}/>
         <CreateUser isOpen={this.state.userModal} toggle={this.toggleUserModal}/>
       </div>
     )
