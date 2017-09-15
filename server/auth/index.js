@@ -3,7 +3,7 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken'; 
 import LocalStrategy from 'passport-local';
 
-module.exports = (config, User, Auth) => {
+function AuthRoutes(config, User, Auth) {
 
   passport.use(new LocalStrategy({
     usernameField: 'email',
@@ -42,3 +42,5 @@ module.exports = (config, User, Auth) => {
 
   return router;
 }
+
+export default AuthRoutes;

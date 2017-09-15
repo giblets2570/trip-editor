@@ -11,7 +11,7 @@ import {
 
 import { DateRangePicker } from 'react-dates';
 
-import { create, update } from '../../actions/tripsActions'
+import { create, update, remove } from '../../actions/tripsActions'
 
 class Trips extends Component {
   constructor(props){
@@ -27,6 +27,7 @@ class Trips extends Component {
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
     this.save = this.save.bind(this);
+    this.remove = this.remove.bind(this);
   }
   handleChange(event,key) {
     this.setState({
@@ -59,8 +60,20 @@ class Trips extends Component {
     }));
     this.props.toggle();
   }
+  remove(){
+    this.props.dispatch(remove(this.props.trip._id));
+    this.props.toggle();
+  }
   render(){
     const header = this.props.trip ? "Editing trip" : "Create a trip";
+    let deleteButton = null;
+    if(this.props.trip) {
+      deleteButton = (
+        <Button onClick={this.remove}>
+          Delete
+        </Button>
+      )
+    }
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
         <ModalHeader toggle={this.props.toggle}>{header}</ModalHeader>
@@ -104,7 +117,8 @@ class Trips extends Component {
             </FormGroup>
             <Button>
               Submit
-            </Button> 
+            </Button>
+            {deleteButton}
           </Form>
         </ModalBody>
       </Modal>

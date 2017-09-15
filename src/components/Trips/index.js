@@ -76,7 +76,7 @@ class Trips extends Component {
   }
   render() {
     let trips = this.state.hidePast ?
-      this.props.trips.filter((trip) => moment().isAfter(trip.startDate)) :
+      this.props.trips.filter((trip) => moment().isBefore(trip.startDate)) :
       this.props.trips.slice(0);
 
     trips = this.props.filters.destination ? 

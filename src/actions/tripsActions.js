@@ -23,6 +23,13 @@ export function update(id, trip) {
 	}
 }
 
+export function remove(id) {
+	return {
+		type: "REMOVE_TRIP",
+		payload: axios.delete(`${domain}trips/${id}`)
+	}
+}
+
 export function updateFilters(newFilters) {
 	return {
 		type: "UPDATE_FILTERS",

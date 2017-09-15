@@ -74,7 +74,7 @@ class Service {
     let existing = await this.Model.findById(id).exec();
     if (!existing) return;
     await existing.remove();
-    return existing;
+    return { _id: id };
   }
 
   /**

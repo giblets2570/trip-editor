@@ -96,11 +96,11 @@ class Endpoint {
       return this.sendError(res,error);
     }
     if (!object) {
-      return res.status(404).send({
+      return res.status(404).json({
         message: `No existing object found for id ${id}`
       });
     }
-    res.status(204).send();
+    res.status(200).send(object);
   }
 }
 
