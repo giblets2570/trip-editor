@@ -19,15 +19,23 @@ class Trips extends Component {
     this.state = {
       toggled: false,
       isOpen: false,
-      startDate:    this.props.trip ? moment(this.props.trip.startDate) : null,
-      endDate:      this.props.trip ? moment(this.props.trip.endDate) : null,
-      destination:  this.props.trip ? this.props.trip.destination : "",
-      comments:     this.props.trip ? this.props.trip.comments : ""
+      startDate:    null,
+      endDate:      null,
+      destination:  "",
+      comments:     ""
     }
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
     this.save = this.save.bind(this);
     this.remove = this.remove.bind(this);
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      startDate:    this.props.trip ? moment(this.props.trip.startDate) : null,
+      endDate:      this.props.trip ? moment(this.props.trip.endDate) : null,
+      destination:  this.props.trip ? this.props.trip.destination : "",
+      comments:     this.props.trip ? this.props.trip.comments : ""
+    })
   }
   handleChange(event,key) {
     this.setState({
