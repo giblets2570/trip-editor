@@ -2,5 +2,15 @@
 	"user_1": {
 		"email": "test@test.com",
 		"password": "test"
+	},
+	"manager": {
+		"email": "manager@manager.com",
+		"password": "manager",
+		"role": "manager"
+	},
+	"admin": {
+		"email": "admin@admin.com",
+		"password": "admin",
+		"role": "admin"
 	}
 }

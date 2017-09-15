@@ -25,7 +25,6 @@ import TripCard from '../TripCard'
 
 import { DateRangePicker } from 'react-dates'
 
-import { logout } from '../../actions/authActions'
 import { fetch, updateFilters } from '../../actions/tripsActions'
 
 class Trips extends Component {
@@ -35,28 +34,10 @@ class Trips extends Component {
       toggled: false,
       modal: false
     }
-    this.logout = this.logout.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.printMonth = this.printMonth.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
     this.updateDates = this.updateDates.bind(this);
   }
   componentWillMount(){
     this.props.dispatch(fetch());
-  }
-  printMonth() {
-    const now = moment();
-    const nextMonth = moment(now).add(1, 'months');
-    const trips = this.props.trips.filter((trip) => {
-      let date = moment(trip.startDate);
-      return date.isBetween(now, nextMonth);
-    });
-    console.log(trips);
-  }
-  toggleModal() {
-    this.setState({
-      modal: !this.state.modal
-    })
   }
   handleChange(event,key) {
     const newFilters = {...this.props.filters, destination: event.target.value}
@@ -65,14 +46,6 @@ class Trips extends Component {
   updateDates(startDate, endDate) {
     const newFilters = {...this.props.filters, startDate, endDate}
     this.props.dispatch(updateFilters(newFilters))
-  }
-  toggle() {
-    this.setState({
-      toggled: !this.state.toggled
-    })
-  }
-  logout() {
-    this.props.dispatch(logout());
   }
   render() {
     let trips = this.state.hidePast ?
@@ -104,24 +77,6 @@ class Trips extends Component {
     });
     return (
       <div>
-        <Navbar color="faded" light toggleable>
-          <NavbarToggler right onClick={this.toggle} />
-          <NavbarBrand to="#">Hi {this.props.user.name}</NavbarBrand>
-          <Collapse isOpen={this.state.toggled} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="#" onClick={this.printMonth}>Print Month</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" onClick={this.toggleModal}>Create Trip</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" onClick={this.logout}>Logout</NavLink>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
-        <CreateTrip isOpen={this.state.modal} toggle={this.toggleModal}/>
         <Container className='tripsBody'>
           <Row>
             <Col lg="4" xs="12">
@@ -168,7 +123,6 @@ class Trips extends Component {
 
 export default connect((store) => {
   return {
-    user: store.auth.user,
     trips: store.trips.trips,
     filters: store.trips.filters
   }

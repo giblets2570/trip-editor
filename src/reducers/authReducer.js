@@ -1,10 +1,12 @@
 const initialToken = localStorage.getItem('token');
-
+const initialRole = localStorage.getItem('role');
 export default function reducer(state={
-	token: localStorage.token,
-	user: {},
+	token: initialToken,
+	user: {
+		role: initialRole
+	},
 	checking_logged_in: false,
-	logged_in: initialToken && initialToken !== "null",
+	logged_in: initialToken,
 	login_screen: true,
 	logging_in: false,
 	signing_up: false,
@@ -18,8 +20,9 @@ export default function reducer(state={
 			return {...state, error: {message: "Both passwords must be equal"}};
 		}
 		case "LOGOUT": {
-			localStorage.setItem('token', null);
-			return {...state, logged_in: false, token: null, user: null};
+			localStorage.removeItem('token');
+			localStorage.removeItem('role');
+			return {...state, logged_in: false, token: null, user: {role: null}};
 		}
 		case "LOGIN_PENDING": {
 			return {...state, logging_in: true};
@@ -33,6 +36,7 @@ export default function reducer(state={
 		}
 		case "LOGIN_FULFILLED": {
 			localStorage.setItem('token', action.payload.data.token);
+			localStorage.setItem('role', action.payload.data.user.role);
 			return {
 				...state, 
 				logging_in: false,
@@ -66,7 +70,8 @@ export default function reducer(state={
 			return {...state, checking_logged_in: true};
 		}
 		case "CHECK_LOGGED_IN_REJECTED": {
-			localStorage.setItem('token', null);
+			localStorage.removeItem('token');
+			localStorage.removeItem('role');
 			return {
 				...state, 
 				checking_logged_in: false, 

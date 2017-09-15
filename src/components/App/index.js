@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
 import AlertContainer from 'react-alert'
 
-
+import UsersComponent from '../Users'
 import TripsComponent from '../Trips'
 import HomeComponent from '../Home'
-
+import Navigation from '../Navigation'
 import './style.css';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  Container,
+  Row,
+  Col,
+  Input,
+  Label
+} from 'reactstrap'
 
 import { connect } from 'react-redux'
 import { isLoggedIn } from '../../actions/authActions'
 
 import { userIsNotAuthenticated, userIsAuthenticated } from '../../auth'
 
-const Trips = userIsAuthenticated(TripsComponent);
+const Users = userIsAuthenticated(['manager','admin'])(UsersComponent);
+const Trips = userIsAuthenticated(['user'])(TripsComponent);
 const Home = userIsNotAuthenticated(HomeComponent);
 
 class App extends Component {
@@ -24,6 +40,10 @@ class App extends Component {
     theme: 'dark',
     time: 5000,
     transition: 'scale'
+  }
+  constructor(){
+    super();
+    this.state = {}; 
   }
   componentWillMount() {
     this.props.dispatch(isLoggedIn());
@@ -43,11 +63,13 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Navigation></Navigation>
         <BrowserRouter className="App">
           <div>
             <Switch>
               <Route exact path="/" component={Home}/>
               <Route path="/trips" component={Trips}/>
+              <Route path="/users" component={Users}/>
             </Switch>
           </div>
         </BrowserRouter>
