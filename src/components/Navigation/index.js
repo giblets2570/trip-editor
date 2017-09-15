@@ -22,12 +22,13 @@ class Navigation extends Component {
     super();
     this.state = {
       toggled: false,
-      modal: false
+      tripModal: false,
+      userModal: false
     }
     this.logout = this.logout.bind(this);
     this.toggle = this.toggle.bind(this);
     this.printMonth = this.printMonth.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
+    this.toggleTripModal = this.toggleTripModal.bind(this);
   }
   printMonth() {
     const now = moment();
@@ -38,9 +39,14 @@ class Navigation extends Component {
     });
     console.log(trips);
   }
-  toggleModal() {
+  toggleTripModal() {
     this.setState({
-      modal: !this.state.modal
+      tripModal: !this.state.tripModal
+    })
+  }
+  toggleUserModal() {
+    this.setState({
+      userModal: !this.state.userModal
     })
   }
   toggle() {
@@ -57,16 +63,23 @@ class Navigation extends Component {
     switch(this.props.user.role) {
       case "user": {
         navItems.push(<NavLink href="#" onClick={this.printMonth}>Print Month</NavLink>);
-        navItems.push(<NavLink href="#" onClick={this.toggleModal}>Create Trip</NavLink>);
+        navItems.push(<NavLink href="#" onClick={this.toggleTripModal}>Create Trip</NavLink>);
         navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>);
         break;
       }
       case "manager": {
-        navItems.push(<NavLink href="#" onClick={this.toggleModal}>Create User</NavLink>);
+        navItems.push(<NavLink href="#" onClick={this.toggleUserModal}>Create User</NavLink>);
         navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>);
         break;
       }
       case "admin": {
+        if(this.props.pathname){
+          if(this.props.pathname.indexOf('trips') !== -1){
+            navItems.push(<NavLink href="#" onClick={this.toggleTripModal}>Create Trip</NavLink>);
+          }else{
+            navItems.push(<NavLink href="#" onClick={this.toggleUserModal}>Create User</NavLink>);
+          }
+        }
         navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>);
         break;
       }
@@ -90,8 +103,8 @@ class Navigation extends Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <CreateTrip isOpen={this.state.modal} toggle={this.toggleModal}/>
-        <CreateUser isOpen={this.state.modal} toggle={this.toggleModal}/>
+        <CreateTrip isOpen={this.state.tripModal} toggle={this.toggleTripModal}/>
+        <CreateUser isOpen={this.state.userModal} toggle={this.toggleUserModal}/>
       </div>
     )
   }
@@ -99,6 +112,7 @@ class Navigation extends Component {
 
 export default connect((store) => {
   return {
-    user: store.auth.user
+    user: store.auth.user,
+    trips: store.trips.trips
   }
 })(Navigation);

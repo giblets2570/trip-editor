@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 
 import { Link } from 'react-router-dom';
-
+import Navigation from '../Navigation'
 import './style.css'
 
 import { connect } from 'react-redux'
@@ -111,15 +111,18 @@ class Login extends Component {
     }
 
     return (
-      <div className="login">
-        <h3>{header}</h3>
-        <Form onSubmit={this.submit}>
-          {template}
-          <Button>
-            Submit
-          </Button> 
-        </Form>
-        <Link to='#' className="right" onClick={this.toggle}> {link} </Link>
+      <div>
+        <Navigation></Navigation>
+        <div className="login">
+          <h3>{header}</h3>
+          <Form onSubmit={this.submit}>
+            {template}
+            <Button>
+              Submit
+            </Button> 
+          </Form>
+          <Link to='#' className="right" onClick={this.toggle}> {link} </Link>
+        </div>
       </div>
     )
   }

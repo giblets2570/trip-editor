@@ -19,6 +19,7 @@ class TripEndpoint extends Endpoint {
 	async index(req, res) {
 		let trips;
 		let query = req.query;
+		console.log(query);
 		if(req.user.role == 'user' || req.user.role == 'manager'){
 			query.user = req.user._id;
 		}

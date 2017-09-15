@@ -13,7 +13,7 @@ const locationHelper = locationHelperBuilder({})
 
 const userIsNotAuthenticated = connectedRouterRedirect({
   // This sends the user either to the query param route if we have one, or to the trips page if none is specified and the user is already logged in
-  redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/trips',
+  redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/users',
   // This prevents us from adding the query parameter when we send the user away from the login page
   allowRedirectBack: false,
   // Determine if the user is authenticated or not
@@ -26,13 +26,13 @@ const userIsAuthenticated = function(roles) {
   return connectedRouterRedirect({
     // The url to redirect user to if they fail
     redirectPath: (state, ownProps) => {
+      let route = '/';
       if(state.auth.user &&
         state.auth.user.role &&
         userRoles.indexOf(state.auth.user.role) !== -1){
-        return userPageHash[state.auth.user.role];
-      }else{
-        return '/'
+        route = userPageHash[state.auth.user.role];
       }
+      return route;
     },
     // This prevents us from adding the query parameter when we send the user away from the login page
     allowRedirectBack: false,

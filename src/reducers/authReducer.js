@@ -141,6 +141,21 @@ export default function reducer(state={
 				users: newUsers
 			}
 		}
+		case "GET_USER_PENDING": {
+			return {...state, loading: true};
+		}
+		case "GET_USER_REJECTED": {
+			return {...state, loading: false, error: action.payload.data};
+		}
+		case "GET_USER_FULFILLED": {
+			let newUsers = 	state.users
+							.filter((user) => user._id == action.payload.data._id)
+							.concat(action.payload.data);
+			return {
+				...state, 
+				users: newUsers
+			}
+		}
 		default: {
 			break;
 		}

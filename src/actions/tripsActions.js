@@ -2,10 +2,10 @@ import axios from './request.service';
 
 const domain = `http://localhost:8000/`;
 
-export function fetch(trip) {
+export function fetch(query={}) {
 	return {
 		type: "FETCH_TRIPS",
-		payload: axios.get(`${domain}trips`)
+		payload: axios.get(`${domain}trips`, {params: query})
 	}
 }
 

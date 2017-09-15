@@ -5,6 +5,7 @@ import moment from 'moment'
 import { logout, fetch } from '../../actions/authActions'
 
 import UserCard from '../UserCard'
+import Navigation from '../Navigation'
 
 import './style.css'
 
@@ -19,9 +20,13 @@ class Users extends Component {
     const users = this.props.users.map((user, key) => {
       return <UserCard key={key} user={user}/>
     })
+    console.log(this.props);
     return (
-      <div className="usersBody">
-        {users}
+      <div>
+        <Navigation pathname={this.props.location.pathname}></Navigation>
+        <div className="usersBody">
+          {users}
+        </div>
       </div>
     )
   }

@@ -15,9 +15,10 @@ import './style.css'
 
 import CreateTrip from '../CreateTrip'
 import TripCard from '../TripCard'
+import Navigation from '../Navigation'
 
 import { DateRangePicker } from 'react-dates'
-
+import { get } from '../../actions/authActions'
 import { fetch, updateFilters } from '../../actions/tripsActions'
 
 class Trips extends Component {
@@ -30,7 +31,12 @@ class Trips extends Component {
     this.updateDates = this.updateDates.bind(this);
   }
   componentWillMount(){
-    this.props.dispatch(fetch());
+    let query = {};
+    if(this.props.match.params.id){
+      query.user = this.props.match.params.id;
+    }
+    this.props.dispatch(fetch(query));
+    this.makeSureUserThere();
   }
   handleChange(event,key) {
     const newFilters = {...this.props.filters, destination: event.target.value}
@@ -40,7 +46,25 @@ class Trips extends Component {
     const newFilters = {...this.props.filters, startDate, endDate}
     this.props.dispatch(updateFilters(newFilters))
   }
+  makeSureUserThere() {
+    if(this.props.user.role == 'admin'){
+      const pagesUser = this.props.users.find((user) => user._id == this.props.match.params.id);
+      if(!pagesUser){
+        this.props.dispatch(get(this.props.match.params.id));
+      }
+    }
+  }
   render() {
+
+    let ifAdmin = null;
+
+    if(this.props.user.role == 'admin'){
+      const pagesUser = this.props.users.find((user) => user._id == this.props.match.params.id);
+      if(pagesUser){
+        ifAdmin = (<h2>Showing trips for {pagesUser.name}</h2>)
+      }
+    }
+
     let trips = this.state.hidePast ?
       this.props.trips.filter((trip) => moment().isBefore(trip.startDate)) :
       this.props.trips.slice(0);
@@ -70,6 +94,8 @@ class Trips extends Component {
     });
     return (
       <div>
+        <Navigation pathname={this.props.location.pathname}></Navigation>
+        {ifAdmin}
         <Container className='tripsBody'>
           <Row>
             <Col lg="4" xs="12">
@@ -117,6 +143,8 @@ class Trips extends Component {
 export default connect((store) => {
   return {
     trips: store.trips.trips,
-    filters: store.trips.filters
+    filters: store.trips.filters,
+    user: store.auth.user,
+    users: store.auth.users
   }
 })(windowSize(Trips));

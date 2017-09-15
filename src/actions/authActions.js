@@ -74,6 +74,13 @@ export function isLoggedIn() {
 	}
 }
 
+export function get(id) {
+	return {
+		type: "GET_USER",
+		payload: axios.get(`${domain}users/${id}`)
+	}
+}
+
 export function fetch() {
 	return {
 		type: "FETCH_USERS",
