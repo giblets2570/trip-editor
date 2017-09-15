@@ -100,10 +100,11 @@ class UserModel extends Model {
 	}
 
 	get profile() {
-		return {
-			email: this.email,
-			role: this.role,
-			name: this.name
+		return { 
+			email: this.email, 
+			role: this.role, 
+			name: this.name, 
+			_id: this._id 
 		}
 	}
 }

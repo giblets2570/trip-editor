@@ -26,7 +26,6 @@ class TripCard extends Component {
   }
   toggleEdit(){
     this.setState({
-      destination: this.props.trip.destination,
       editing: !this.state.editing
     })
   }

@@ -2,23 +2,33 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-import { logout } from '../../actions/authActions'
+import { logout, fetch } from '../../actions/authActions'
+
+import UserCard from '../UserCard'
+
+import './style.css'
 
 class Users extends Component {
   constructor(){
     super();
   }
+  componentWillMount(){
+    this.props.dispatch(fetch());
+  }
   render(){
+    const users = this.props.users.map((user, key) => {
+      return <UserCard key={key} user={user}/>
+    })
     return (
-      <h1>Fighting</h1>
+      <div className="usersBody">
+        {users}
+      </div>
     )
   }
 }
 
 export default connect((store) => {
   return {
-    user: store.auth.user,
-    trips: store.trips.trips,
-    filters: store.trips.filters
+    users: store.auth.users
   }
 })(Users);

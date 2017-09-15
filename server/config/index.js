@@ -10,7 +10,7 @@ let config = {
 	secrets: {
 		session: process.env.SECRET
 	},
-	userRoles: ['admin','manager','user']
+	userRoles: ['user','manager','admin']
 }
 
 switch (NODE_ENV){

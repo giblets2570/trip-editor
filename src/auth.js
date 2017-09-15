@@ -36,9 +36,8 @@ const userIsAuthenticated = function(roles) {
     },
     // This prevents us from adding the query parameter when we send the user away from the login page
     allowRedirectBack: false,
-     // Determine if the user is authenticated or not
+    // Determine if the user is authenticated or not
     authenticatedSelector: (state) => {
-      console.log(state);
       return (
         state.auth.logged_in && 
         state.auth.user && 

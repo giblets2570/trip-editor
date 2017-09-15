@@ -13,6 +13,7 @@ import {
 } from 'reactstrap'
 
 import CreateTrip from '../CreateTrip'
+import CreateUser from '../CreateUser'
 
 import { logout } from '../../actions/authActions'
 
@@ -74,12 +75,10 @@ class Navigation extends Component {
       }
     }
 
-    navItems = navItems.map((item) => (
-      <NavItem>{item}</NavItem>
+    navItems = navItems.map((item, index) => (
+      <NavItem key={index}>{item}</NavItem>
     ))
 
-    console.log(this.props.user);
-    
     return (
       <div>
         <Navbar color="faded" light toggleable>
@@ -92,8 +91,8 @@ class Navigation extends Component {
           </Collapse>
         </Navbar>
         <CreateTrip isOpen={this.state.modal} toggle={this.toggleModal}/>
+        <CreateUser isOpen={this.state.modal} toggle={this.toggleModal}/>
       </div>
-        // <Createuser isOpen={this.state.modal} toggle={this.toggleModal}/>
     )
   }
 }

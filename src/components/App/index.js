@@ -9,21 +9,6 @@ import './style.css';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  Container,
-  Row,
-  Col,
-  Input,
-  Label
-} from 'reactstrap'
-
 import { connect } from 'react-redux'
 import { isLoggedIn } from '../../actions/authActions'
 

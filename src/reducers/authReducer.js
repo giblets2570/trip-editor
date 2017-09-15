@@ -2,6 +2,7 @@ const initialToken = localStorage.getItem('token');
 const initialRole = localStorage.getItem('role');
 export default function reducer(state={
 	token: initialToken,
+	users: [],
 	user: {
 		role: initialRole
 	},
@@ -66,7 +67,39 @@ export default function reducer(state={
 				user: action.payload.data.user
 			}
 		}
-		case "CHECK_LOGGED_IN": {
+		case "CREATE_PENDING": {
+			return {...state };
+		}
+		case "CREATE_REJECTED": {
+			return {...state, error: action.payload.data || action.payload.response.data};
+		}
+		case "CREATE_FULFILLED": {
+			return {
+				...state,
+				error: null,
+				users: state.users.concat(action.payload.data)
+			}
+		}
+		case "UPDATE_PENDING": {
+			return {
+				...state 
+			};
+		}
+		case "UPDATE_REJECTED": {
+			return {
+				...state, error: action.payload.data || action.payload.response.data
+			};
+		}
+		case "UPDATE_FULFILLED": {
+			let updatedUsers = state.users.map((trip) => {
+				if(trip._id === action.payload.data._id){
+					return action.payload.data;
+				}
+				return trip;
+			});
+			return { ...state, error: null, users: updatedUsers }
+		}
+		case "CHECK_LOGGED_IN_PENDING": {
 			return {...state, checking_logged_in: true};
 		}
 		case "CHECK_LOGGED_IN_REJECTED": {
@@ -85,6 +118,15 @@ export default function reducer(state={
 				...state,
 				user: action.payload.data
 			}
+		}
+		case "FETCH_USERS_PENDING": {
+			return { ...state };
+		}
+		case "FETCH_USERS_REJECTED": {
+			return { ...state, error: action.payload.data || action.payload.response.data };
+		}
+		case "FETCH_USERS_FULFILLED": {
+			return { ...state,users: action.payload.data }
 		}
 		default: {
 			break;

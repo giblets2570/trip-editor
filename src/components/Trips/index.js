@@ -4,13 +4,6 @@ import windowSize from 'react-window-size';
 import moment from 'moment'
 
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
   Container,
   Row,
   Col,

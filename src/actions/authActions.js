@@ -37,6 +37,25 @@ export function signup(user) {
 	}
 }
 
+export function create(user) {
+	return {
+		type: "CREATE",
+		payload: axios.post(`${domain}users`, user)
+	}
+}
+
+export function update(id,user) {
+	for(let key of Object.keys(user)){
+		if(!user[key]){
+			delete user[key];
+		}
+	}
+	return {
+		type: "UPDATE",
+		payload: axios.put(`${domain}users/${id}`, user)
+	}
+}
+
 export function isLoggedIn() {
 	if(localStorage.token && localStorage.token !== 'null'){
 		return {
@@ -48,4 +67,9 @@ export function isLoggedIn() {
 	}
 }
 
-
+export function fetch() {
+	return {
+		type: "FETCH_USERS",
+		payload: axios.get(`${domain}users`)
+	}
+}
