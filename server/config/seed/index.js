@@ -14,6 +14,7 @@ let generateCreator = (Model,formatter) => {
 		if (formatter) formatter(doc);
 		doc = new Model(doc);
 		await doc.save();
+		console.log(doc);
 		return doc;
 	}
 	return creator;

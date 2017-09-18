@@ -13,7 +13,6 @@ import {
 
 import './style.css'
 
-import CreateTrip from '../CreateTrip'
 import TripCard from '../TripCard'
 import Navigation from '../Navigation'
 
@@ -47,21 +46,20 @@ class Trips extends Component {
     this.props.dispatch(updateFilters(newFilters))
   }
   makeSureUserThere() {
-    if(this.props.user.role == 'admin'){
-      const pagesUser = this.props.users.find((user) => user._id == this.props.match.params.id);
+    if(this.props.user.role === 'admin'){
+      const pagesUser = this.props.users.find((user) => user._id === this.props.match.params.id);
       if(!pagesUser){
         this.props.dispatch(get(this.props.match.params.id));
       }
     }
   }
   render() {
-    console.log(this.props);
     let ifAdmin = null;
 
-    if(this.props.user.role == 'admin'){
-      const pagesUser = this.props.users.find((user) => user._id == this.props.match.params.id);
+    if(this.props.user.role === 'admin'){
+      const pagesUser = this.props.users.find((user) => user._id === this.props.match.params.id);
       if(pagesUser){
-        ifAdmin = (<h2>Showing trips for {pagesUser.name}</h2>)
+        ifAdmin = (<h2 className="ifAdminHeader">Showing trips for {pagesUser.name}</h2>)
       }
     }
 
@@ -95,9 +93,9 @@ class Trips extends Component {
     return (
       <div>
         <Navigation match={this.props.match}></Navigation>
-        {ifAdmin}
         <Container className='tripsBody'>
           <Row>
+            {ifAdmin}
             <Col lg="4" xs="12">
               <Label 
                 for="Destination">Search for your destination</Label>

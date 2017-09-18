@@ -10,9 +10,10 @@ export function toggle() {
 }
 
 export function login(details) {
+	let { email, password } = details;
 	return {
 		type: "LOGIN",
-		payload: axios.post(`${domain}auth/login`, details)
+		payload: axios.post(`${domain}auth/login`, { email, password })
 	}
 }
 

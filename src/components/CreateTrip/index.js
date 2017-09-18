@@ -68,14 +68,18 @@ class Trips extends Component {
     let deleteButton = null;
     if(this.props.trip) {
       deleteButton = (
-        <Button onClick={this.remove}>
+        <Button color="danger" onClick={this.remove}>
           Delete
         </Button>
       )
     }
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{header}</ModalHeader>
+        <ModalHeader 
+          color="danger"
+          className="green-color"
+          toggle={this.props.toggle}>{header}
+        </ModalHeader>
         <ModalBody>
           <Form onSubmit={this.save}>
             <FormGroup>
@@ -114,7 +118,7 @@ class Trips extends Component {
                 onChange={(e) => this.handleChange(e, 'comments')}
                 placeholder="I'm looking forward to the crepes" />
             </FormGroup>
-            <Button>
+            <Button color="success">
               Submit
             </Button>
             {deleteButton}

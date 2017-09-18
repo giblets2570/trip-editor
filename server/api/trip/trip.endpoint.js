@@ -19,7 +19,6 @@ class TripEndpoint extends Endpoint {
 	async index(req, res) {
 		let trips;
 		let query = req.query;
-		console.log(query);
 		if(req.user.role == 'user' || req.user.role == 'manager'){
 			query.user = req.user._id;
 		}
@@ -32,4 +31,4 @@ class TripEndpoint extends Endpoint {
 	}
 }
 
-module.exports = TripEndpoint
+export default TripEndpoint

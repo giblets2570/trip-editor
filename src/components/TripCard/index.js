@@ -34,21 +34,25 @@ class TripCard extends Component {
 
     let daysUntilCard;
     if(daysUntil > 0) {
-      daysUntilCard = <CardTitle>{daysUntil} days to go!</CardTitle>;
-    }else if(daysUntil < 0){
-      daysUntilCard = <CardTitle>Started {-daysUntil} days ago!</CardTitle>;
-    }else{
-      daysUntilCard = <CardTitle>It's happenning today!</CardTitle>;
+      daysUntilCard = `${daysUntil} day${daysUntil===0?"":"s"} away`;
+    }else if(daysUntil === 0){
+      daysUntilCard = `It's happenning today!`;
     }
     return (
       <div>
         <Card className="card">
-          <CardHeader tag="h3">{this.props.trip.destination}</CardHeader>
+          <CardHeader tag="h3">
+            {this.props.trip.destination}
+          </CardHeader>
           <CardBlock>
-            {daysUntilCard}
             <CardText>{this.props.trip.comments}</CardText>
           </CardBlock>
-          <CardFooter><Button onClick={this.toggleEdit}>Edit</Button></CardFooter>
+          <CardFooter>
+            <Button onClick={this.toggleEdit}>Edit</Button>
+            <span style={{float: "right"}}>
+              {daysUntilCard}
+            </span>
+          </CardFooter>
         </Card>
         <CreateTrip isOpen={this.state.editing} toggle={this.toggleEdit} trip={this.props.trip}/>
       </div>

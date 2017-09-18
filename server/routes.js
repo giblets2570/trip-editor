@@ -11,12 +11,12 @@ import AuthRoutes from './auth';
 function loadClass(name,type){
   var Class;
   try {
-    Class = require(`./api/${name}/${name}.${type}`);
+    Class = require(`./api/${name}/${name}.${type}`).default;
   } catch(error) {
     if (config.debug) console.log(`Didn't find ${name} ${type}`);
     if (error.name === 'SyntaxError') throw(error);
     else if (error.name === 'ReferenceError') throw(error);
-    else Class = require(`./utilities/${type}`);
+    else Class = require(`./utilities/${type}`).default;
   }
   return Class
 }

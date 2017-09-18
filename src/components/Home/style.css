@@ -5,3 +5,8 @@
 .right {
 	float: right;
 }
+
+.green-color {
+	background: #2ecc71;
+	color: white;
+}

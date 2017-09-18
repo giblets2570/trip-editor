@@ -1,5 +1,6 @@
 export default function reducer(state={
 	trips: [],
+	printTrips: [],
 	filters: {
 		destination: "",
 		startDate: null,
@@ -57,6 +58,12 @@ export default function reducer(state={
 		}
 		case "FETCH_TRIPS_FULFILLED": {
 			return {...state, trips: action.payload.data}
+		}
+		case "PRINT_PAGE": {
+			return {...state, printTrips: action.payload}
+		}
+		case "END_PRINT_PAGE": {
+			return {...state, printTrips: []}
 		}
 		default: {
 			break;

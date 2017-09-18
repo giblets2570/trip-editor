@@ -14,8 +14,8 @@ function AuthRoutes(config, User, Auth) {
         return done(null, false, { message: 'Error in request' });
       if(!user)
         return done(null, false, { message: 'Incorrect username' });
-      // if(!user.authenticate(password))
-      //   return done(null, false, { message: 'Incorrect password' });
+      if(!user.authenticate(password))
+        return done(null, false, { message: 'Incorrect password' });
       return done(null, user);
     });
   }));

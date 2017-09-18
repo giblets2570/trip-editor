@@ -149,7 +149,7 @@ export default function reducer(state={
 		}
 		case "GET_USER_FULFILLED": {
 			let newUsers = 	state.users
-							.filter((user) => user._id == action.payload.data._id)
+							.filter((user) => user._id === action.payload.data._id)
 							.concat(action.payload.data);
 			return {
 				...state, 

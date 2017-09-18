@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import moment from 'moment'
-
-import { logout } from '../../actions/authActions'
 
 import { 
   Modal, ModalHeader, ModalBody,
@@ -10,7 +7,6 @@ import {
   FormGroup, Input, Label
 } from 'reactstrap';
 
-import { DateRangePicker } from 'react-dates';
 import { passwordWrong, create, update, remove } from '../../actions/authActions'
 
 class CreateUser extends Component {
@@ -29,10 +25,10 @@ class CreateUser extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      name: this.props.user ? this.props.user.name : "",
-      email: this.props.user ? this.props.user.email : "",
-      password: this.props.user ? this.props.user.password : "",
-      passwordCheck: this.props.user ? this.props.user.passwordCheck : ""
+      name: nextProps.user ? nextProps.user.name : "",
+      email: nextProps.user ? nextProps.user.email : "",
+      password: nextProps.user && nextProps.user.password ? nextProps.user.password : "",
+      passwordCheck: nextProps.user && nextProps.user.passwordCheck ? nextProps.user.passwordCheck : ""
     })
   }
   handleChange(event,key) {
@@ -42,27 +38,23 @@ class CreateUser extends Component {
   }
   submit(e) {
     e.preventDefault();
-    console.log(this.props.user);
-    if(this.props.user && this.props.user._id){
-      this.update();
+    console.log(this.state);
+    if(this.state.password !== this.state.passwordCheck){
+      this.props.dispatch(passwordWrong());
     }else{
-      this.create();
+      if(this.props.user && this.props.user._id){
+        this.update();
+      }else{
+        this.create();
+      }
     }
     this.props.toggle();
   }
   create(){
-    if(this.state.password !== this.state.passwordCheck){
-      this.props.dispatch(passwordWrong());
-    }else{
-      this.props.dispatch(create(this.state));
-    }
+    this.props.dispatch(create(this.state));
   }
   update(){
-    if(this.state.password !== this.state.passwordCheck){
-      this.props.dispatch(passwordWrong());
-    }else{
-      this.props.dispatch(update(this.props.user._id,this.state));
-    }
+    this.props.dispatch(update(this.props.user._id,this.state));
   }
   remove(){
     this.props.dispatch(remove(this.props.user._id));
@@ -73,14 +65,17 @@ class CreateUser extends Component {
     let deleteButton = null;
     if(this.props.user) {
       deleteButton = (
-        <Button onClick={this.remove}>
+        <Button color="danger" onClick={this.remove}>
           Delete
         </Button>
       )
     }
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{header}</ModalHeader>
+        <ModalHeader 
+          color="danger"
+          className="green-color"
+          toggle={this.props.toggle}>{header}</ModalHeader>
         <ModalBody>
           <Form onSubmit={this.submit}>
             <FormGroup>
@@ -127,7 +122,7 @@ class CreateUser extends Component {
                 onChange={(e) => this.handleChange(e, 'passwordCheck')}
                 placeholder="" />
             </FormGroup>
-            <Button>
+            <Button color="success">
               Submit
             </Button>
             {deleteButton}

@@ -9,7 +9,7 @@ const userPageHash = {
 
 const userRoles = Object.keys(userPageHash);
 
-const locationHelper = locationHelperBuilder({})
+const locationHelper = locationHelperBuilder({});
 
 const userIsNotAuthenticated = connectedRouterRedirect({
   // This sends the user either to the query param route if we have one, or to the trips page if none is specified and the user is already logged in

@@ -36,3 +36,21 @@ export function updateFilters(newFilters) {
 		payload: newFilters
 	}
 }
+
+export function printPage(trips) {
+	return {
+		type: "PRINT_PAGE",
+		payload: trips
+	}
+}
+
+export function endPrintPage() {
+	return {
+		type: "END_PRINT_PAGE",
+		payload: null
+	}
+}
+
+
+
+

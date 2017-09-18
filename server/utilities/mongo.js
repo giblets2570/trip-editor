@@ -38,4 +38,4 @@ function Mongo(name, _class){
   return mongoose.model(name, schema);
 }
 
-module.exports = Mongo;
+export default Mongo;

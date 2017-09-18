@@ -46,13 +46,9 @@ class Endpoint {
     let query = req.query;
     try {
       object = await this.service.show(id,query);
+      if(!object) throw new Error(`No object found for id ${id}`);
     } catch(error) {
       return this.sendError(res,error);
-    }
-    if (!object) {
-      return res.status(404).send({
-        message: `No object found for id ${id}`
-      });
     }
     res.send(object);
   }
@@ -75,14 +71,9 @@ class Endpoint {
     let data = req.body;
     try {
       object = await this.service.update(id,data)
-      console.log(object);
+      if(!object) throw new Error(`No existing object found for id ${id}`);
     } catch(error) {
       return this.sendError(res,error);
-    }
-    if (!object) {
-      return res.status(404).send({
-        message: `No existing object found for id ${id}`
-      });
     }
     res.status(200).json(object);
   }
@@ -92,16 +83,11 @@ class Endpoint {
     let id = req.params.id;
     try {
       object = await this.service.destroy(id);
+      if(!object) throw new Error(`No existing object found for id ${id}`);
     } catch(error) {
       return this.sendError(res,error);
-    }
-    if (!object) {
-      return res.status(404).json({
-        message: `No existing object found for id ${id}`
-      });
     }
     res.status(200).send(object);
   }
 }
-
-module.exports = Endpoint
+export default Endpoint

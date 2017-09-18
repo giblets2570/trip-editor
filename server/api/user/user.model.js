@@ -12,13 +12,12 @@ class UserModel extends Model {
 	* @param {String} password
 	* @param {Function} callback
 	* @return {Boolean}
-	* @api public
 	*/
 	authenticate(password, callback) {
+		console.log(password);
 		if (!callback) {
 			return this.password === this.encryptPassword(password);
 		}
-
 		this.encryptPassword(password, (err, pwdGen) => {
 			if (err) {
 				return callback(err);
@@ -38,7 +37,6 @@ class UserModel extends Model {
 	* @param {Number} byteSize Optional salt byte size, default to 16
 	* @param {Function} callback
 	* @return {String}
-	* @api public
 	*/
 	makeSalt(byteSize, callback) {
 		var defaultByteSize = 16;
@@ -73,7 +71,6 @@ class UserModel extends Model {
 	* @param {String} password
 	* @param {Function} callback
 	* @return {String}
-	* @api public
 	*/
 	encryptPassword(password, callback) {
 		if (!password || !this.salt) {
@@ -99,6 +96,12 @@ class UserModel extends Model {
 		});
 	}
 
+	/**
+	* Get user profile
+	*
+	* @param {}
+	* @return {Object}
+	*/
 	get profile() {
 		return { 
 			email: this.email, 
@@ -112,6 +115,7 @@ class UserModel extends Model {
 UserModel.schema = {
 	email: String,
 	password: String,
+	salt: String,
 	role: {
 		type: String, 
 		enum: [
@@ -125,13 +129,19 @@ UserModel.schema = {
 
 UserModel.hooks = {
 	pre: {
+		/**
+		* Function that fires just before
+		* saving a user
+		*
+		* @param {next}
+		* @return {}
+		*/
 		save: function(next) {
 			// Handle new/update passwords
 			if (!this.isModified('password')) {
 				return next();
 			}
 			if (!validatePresenceOf(this.password)) {
-				console.log("There ain't no password")
 				return next(new Error('Invalid password'));
 			}
 
@@ -154,4 +164,4 @@ UserModel.hooks = {
 }
 
 
-module.exports = Mongo('User',UserModel);
+export default Mongo('User',UserModel);

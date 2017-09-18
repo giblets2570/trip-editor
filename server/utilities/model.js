@@ -21,4 +21,4 @@ Model.schema = {
 	}
 }
 
-module.exports = Model;
+export default Model;

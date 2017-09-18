@@ -30,17 +30,6 @@ app.use(cors());
 // Assign routes
 routes(app);
 
-// Seed route
-app.get('/seed',(req,res) => {
-	seed().then(() => {
-		let message = 'Data seeded';
-		console.log(message);
-		res.status(200).send({ message });
-	}).catch((error) => {
-		res.status(500).send(error);
-	});
-});
-
 // Seed data
 if (config.seed){
 	seed().then(() => {

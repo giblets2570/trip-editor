@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 
 import { 
-  Card, CardText, CardBlock, CardTitle, CardHeader, Button, CardFooter
+  Card, CardText, CardBlock, CardTitle, Button, CardFooter
 } from 'reactstrap'
 
 import { Link } from 'react-router-dom'
@@ -27,12 +27,10 @@ class UserCard extends Component {
   }
   render() {
     let seeTrips = null;
-    if(this.props.currentUser.role == 'admin'){
+    if(this.props.currentUser.role === 'admin' && this.props.user.role === 'user'){
       seeTrips = (
-        <Button>
-          <Link to={`/trips/${this.props.user._id}`}>
-            See trips
-          </Link>
+        <Button tag={Link} to={`/trips/${this.props.user._id}`}>
+          See trips
         </Button>
       )
     }
