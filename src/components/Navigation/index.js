@@ -24,36 +24,40 @@ import './style.css'
 
 class Navigation extends Component {
   constructor(){
-    super();
+    super()
     this.state = {
       toggled: false,
       tripModal: false,
-      userModal: false
+      userModal: false,
+      id: ""
     }
-    this.logout = this.logout.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.printMonth = this.printMonth.bind(this);
-    this.toggleTripModal = this.toggleTripModal.bind(this);
-    this.toggleUserModal = this.toggleUserModal.bind(this);
+    this.logout = this.logout.bind(this)
+    this.toggle = this.toggle.bind(this)
+    this.printMonth = this.printMonth.bind(this)
+    this.toggleTripModal = this.toggleTripModal.bind(this)
+    this.toggleUserModal = this.toggleUserModal.bind(this)
   }
   componentWillReceiveProps(props){
-    console.log(props.printTrips, this.props.printTrips);
     if(props.printTrips.length && !this.props.printTrips.length) {
       setTimeout(() => {
-        window.print();
-        this.props.dispatch(endPrintPage());
+        window.print()
+        this.props.dispatch(endPrintPage())
+      })
+    }
+    if(props.match && props.match.params){
+      this.setState({
+        id: props.match.params.id
       })
     }
   }
   printMonth() {
-    const now = moment(new Date().toDateString());
-    const nextMonth = moment(now).add(1, 'months');
+    const now = moment(new Date().toDateString())
+    const nextMonth = moment(now).add(1, 'months')
     const trips = this.props.trips.filter((trip) => {
-      let date = moment(trip.startDate);
-      return date.isBetween(now, nextMonth);
-    });
-    console.log(trips);
-    this.props.dispatch(printPage(trips));
+      let date = moment(trip.startDate)
+      return date.isBetween(now, nextMonth)
+    })
+    this.props.dispatch(printPage(trips))
   }
   toggleTripModal() {
     this.setState({
@@ -71,44 +75,44 @@ class Navigation extends Component {
     })
   }
   logout() {
-    this.props.dispatch(logout());
+    this.props.dispatch(logout())
   }
   render() {
 
-    let navItems = [];
+    let navItems = []
     switch(this.props.user.role) {
       case "user": {
-        navItems.push(<NavLink href="#" onClick={this.printMonth}>Print Trips For Month</NavLink>);
-        navItems.push(<NavLink href="#" onClick={this.toggleTripModal}>Create Trip</NavLink>);
-        navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>);
-        break;
+        navItems.push(<NavLink href="#" onClick={this.printMonth}>Print Trips For Month</NavLink>)
+        navItems.push(<NavLink href="#" onClick={this.toggleTripModal}>Create Trip</NavLink>)
+        navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>)
+        break
       }
       case "manager": {
-        navItems.push(<NavLink href="#" onClick={this.toggleUserModal}>Create User</NavLink>);
-        navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>);
-        break;
+        navItems.push(<NavLink href="#" onClick={this.toggleUserModal}>Create User</NavLink>)
+        navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>)
+        break
       }
       case "admin": {
         if(this.props.match){
           if(this.props.match.path.indexOf('trips') !== -1){
-            navItems.push(<NavLink tag={Link} to="/users"> Users </NavLink>);
-            navItems.push(<NavLink href="#" onClick={this.printMonth}>Print Trips For Month</NavLink>);
-            navItems.push(<NavLink href="#" onClick={this.toggleTripModal}>Create Trip</NavLink>);
+            navItems.push(<NavLink tag={Link} to="/users"> Users </NavLink>)
+            navItems.push(<NavLink href="#" onClick={this.printMonth}>Print Trips For Month</NavLink>)
+            navItems.push(<NavLink href="#" onClick={this.toggleTripModal}>Create Trip</NavLink>)
           }else{
-            navItems.push(<NavLink href="#" onClick={this.toggleUserModal}>Create User</NavLink>);
+            navItems.push(<NavLink href="#" onClick={this.toggleUserModal}>Create User</NavLink>)
           }
         }
-        navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>);
-        break;
+        navItems.push(<NavLink href="#" onClick={this.logout}>Logout</NavLink>)
+        break
       }
       default: {
-        break;
+        break
       }
     }
 
     navItems = navItems.map((item, index) => (
       <NavItem key={index}>{item}</NavItem>
-    ));
+    ))
 
     return (
       <div>
@@ -121,7 +125,7 @@ class Navigation extends Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <CreateTrip isOpen={this.state.tripModal} toggle={this.toggleTripModal} for={this.props.match.params.id}/>
+        <CreateTrip isOpen={this.state.tripModal} toggle={this.toggleTripModal} for={this.state.id}/>
         <CreateUser isOpen={this.state.userModal} toggle={this.toggleUserModal}/>
       </div>
     )
@@ -134,4 +138,4 @@ export default connect((store) => {
     trips: store.trips.trips,
     printTrips: store.trips.printTrips
   }
-})(Navigation);
+})(Navigation)

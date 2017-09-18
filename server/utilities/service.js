@@ -1,5 +1,5 @@
-import { getObjectIdString, dateDaySearch } from './generic';
-import { generateId } from './mongo';
+import { getObjectIdString, dateDaySearch } from './generic'
+import { generateId } from './mongo'
 
 /**
   * @name server.Service
@@ -15,7 +15,7 @@ class Service {
   * @return {Array} objects
   */
   constructor(Model){
-    this.Model = Model;
+    this.Model = Model
   }
 
   /*
@@ -24,10 +24,10 @@ class Service {
   * @return {Array} objects
   */
   async index(query) {
-    query = query || {};
-    if(query.date) query.date = dateDaySearch(query.date);
-    let objects = await this.Model.find(query).exec();
-    return objects;
+    query = query || {}
+    if(query.date) query.date = dateDaySearch(query.date)
+    let objects = await this.Model.find(query).exec()
+    return objects
   }
 
   /*
@@ -36,8 +36,8 @@ class Service {
   * @return {Object} object
   */
   async show(id) {
-    let object = await this.Model.findById(id).exec();
-    return object;
+    let object = await this.Model.findById(id).exec()
+    return object
   }
 
   /*
@@ -46,9 +46,9 @@ class Service {
   * @return {Object} created
   */
   async create(object) {
-    object = new this.Model(object);
-    await object.save();
-    return object;
+    object = new this.Model(object)
+    await object.save()
+    return object
   }
 
   /*
@@ -58,11 +58,11 @@ class Service {
   * @return {Promise} object
   */
   async update(id,object) {
-    let existing = await this.show(id);
-    if (!existing) return;
-    let updated = Object.assign(existing,object);
-    await updated.save();
-    return updated;
+    let existing = await this.show(id)
+    if (!existing) return
+    let updated = Object.assign(existing,object)
+    await updated.save()
+    return updated
   }
 
   /*
@@ -71,20 +71,20 @@ class Service {
   * @return {Null} 
   */
   async destroy(id) {
-    let existing = await this.Model.findById(id).exec();
-    if (!existing) return;
-    await existing.remove();
-    return { _id: id };
+    let existing = await this.Model.findById(id).exec()
+    if (!existing) return
+    await existing.remove()
+    return { _id: id }
   }
 
   /**
     * query a model
     */
   async query(Model,query={}){
-    let objects = await Model.find(query).exec();
-    objects.forEach((object) => objects[getObjectIdString(object)] = object);
-    objects.get = (object) => objects[getObjectIdString(object)];
-    return objects;
+    let objects = await Model.find(query).exec()
+    objects.forEach((object) => objects[getObjectIdString(object)] = object)
+    objects.get = (object) => objects[getObjectIdString(object)]
+    return objects
   }
 
 }

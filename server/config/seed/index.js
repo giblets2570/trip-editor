@@ -1,8 +1,8 @@
-import User from '../../api/user/user.model';
-import Trip from '../../api/trip/trip.model';
+import User from '../../api/user/user.model'
+import Trip from '../../api/trip/trip.model'
 
-import users from './data/users.json';
-import trips from './data/trips.json';
+import users from './data/users.json'
+import trips from './data/trips.json'
 
    /**
 	* generateCreator
@@ -11,13 +11,12 @@ import trips from './data/trips.json';
 	*/
 let generateCreator = (Model,formatter) => {
 	let creator = async (doc) => {
-		if (formatter) formatter(doc);
-		doc = new Model(doc);
-		await doc.save();
-		console.log(doc);
-		return doc;
+		if (formatter) formatter(doc)
+		doc = new Model(doc)
+		await doc.save()
+		return doc
 	}
-	return creator;
+	return creator
 }
 
    /**
@@ -27,10 +26,10 @@ let generateCreator = (Model,formatter) => {
 	*/
 let createDocuments = async (documents,creator) => {
   let promises = Object.keys(documents).map(async (key) => {
-    documents[key] = await creator(documents[key]);
-  });
-  await Promise.all(promises);
-};
+    documents[key] = await creator(documents[key])
+  })
+  await Promise.all(promises)
+}
 
    /**
 	* removeCollections
@@ -39,15 +38,15 @@ let createDocuments = async (documents,creator) => {
 let removeCollections = async (Models) => {
 	let promises = Models.map(
 		async (Model) => Model.remove({}).exec()
-	);
-	await Promise.all(promises);
+	)
+	await Promise.all(promises)
 }
 
    /**
 	* createPoint
 	* Create a point from coordinates
 	*/
-let createPoint = (coordinates) => ({ type: 'Point', coordinates: coordinates });
+let createPoint = (coordinates) => ({ type: 'Point', coordinates: coordinates })
 
    /**
 	* seed
@@ -56,20 +55,20 @@ let createPoint = (coordinates) => ({ type: 'Point', coordinates: coordinates })
 let seed = async () => {
 
 	// Remove all data
-	await removeCollections([User,Trip]);
+	await removeCollections([User,Trip])
 
 	// We are now seeding data from app
-	// return;
+	// return
 
 	// Create users
-	await createDocuments(users,generateCreator(User,userFormatter));
+	await createDocuments(users,generateCreator(User,userFormatter))
 	function userFormatter(user){}
 	
 	// Create trips
-	await createDocuments(trips,generateCreator(Trip,tripFormatter));
+	await createDocuments(trips,generateCreator(Trip,tripFormatter))
 	function tripFormatter(trip){}
 
 }
 
 // Export seed script
-module.exports = seed;
+module.exports = seed

@@ -1,12 +1,12 @@
-import Mongo from './mongo';
+import Mongo from './mongo'
 
 class Model {
 	equals(other){
 		if (typeof other === 'object'){
-			other = other._id || other;
-			other = other.toString();
+			other = other._id || other
+			other = other.toString()
 		}
-		return (other === this._id.toString());
+		return (other === this._id.toString())
 	}
 }
 
@@ -21,4 +21,4 @@ Model.schema = {
 	}
 }
 
-export default Model;
+export default Model

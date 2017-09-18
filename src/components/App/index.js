@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import AlertContainer from 'react-alert'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import UsersComponent from '../Users'
 import TripsComponent from '../Trips'
 import HomeComponent from '../Home'
-import './style.css';
+import './style.css'
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
-import { connect } from 'react-redux'
 import { isLoggedIn } from '../../actions/authActions'
-
 import { userIsNotAuthenticated, userIsAuthenticated } from '../../auth'
 
-const Users = userIsAuthenticated(['manager','admin'])(UsersComponent);
-const Trips = userIsAuthenticated(['user','admin'])(TripsComponent);
-const Home = userIsNotAuthenticated(HomeComponent);
+const Users = userIsAuthenticated(['manager','admin'])(UsersComponent)
+const Trips = userIsAuthenticated(['user','admin'])(TripsComponent)
+const Home = userIsNotAuthenticated(HomeComponent)
 
 class App extends Component {
   alertOptions = {
@@ -26,16 +24,15 @@ class App extends Component {
     transition: 'scale'
   }
   constructor(){
-    super();
-    this.state = {}; 
+    super()
+    this.state = {} 
   }
   componentWillMount() {
-    this.props.dispatch(isLoggedIn());
+    this.props.dispatch(isLoggedIn())
   }
   componentWillReceiveProps(newProps) {
-    console.log(newProps.error);
     if(newProps.error) {
-      this.showAlert(newProps.error.message);
+      this.showAlert(newProps.error.message || newProps.error)
     }
   }
   showAlert(text){
@@ -59,7 +56,7 @@ class App extends Component {
         </BrowserRouter>
         <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
       </div>
-    );
+    )
   }
 }
 
@@ -68,4 +65,4 @@ export default connect((store) => {
     logged_in: store.auth.logged_in,
     error: store.auth.error
   }
-})(App);
+})(App)

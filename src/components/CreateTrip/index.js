@@ -1,21 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import windowSize from 'react-window-size';
+import windowSize from 'react-window-size'
 import moment from 'moment'
-
+import { DateRangePicker } from 'react-dates'
 import { 
   Modal, ModalHeader, ModalBody,
   Button, Form,
   FormGroup, Input, Label
-} from 'reactstrap';
+} from 'reactstrap'
 
-import { DateRangePicker } from 'react-dates';
 
 import { create, update, remove } from '../../actions/tripsActions'
 
 class Trips extends Component {
   constructor(props){
-    super(props);
+    super(props)
     this.state = {
       toggled: false,
       isOpen: false,
@@ -24,10 +23,10 @@ class Trips extends Component {
       destination:  "",
       comments:     ""
     }
-    this.create = this.create.bind(this);
-    this.update = this.update.bind(this);
-    this.save = this.save.bind(this);
-    this.remove = this.remove.bind(this);
+    this.create = this.create.bind(this)
+    this.update = this.update.bind(this)
+    this.save = this.save.bind(this)
+    this.remove = this.remove.bind(this)
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -41,31 +40,31 @@ class Trips extends Component {
   handleChange(event,key) {
     this.setState({
       [key]: event.target.value
-    });
+    })
   }
   save(e){
-    e.preventDefault();
+    e.preventDefault()
     if(this.props.trip && this.props.trip._id){
-      this.update();
+      this.update()
     }else{
-      this.create();
+      this.create()
     }
   }
   create(){
-    this.props.dispatch(create(this.state));
-    this.props.toggle();
+    this.props.dispatch(create(this.state))
+    this.props.toggle()
   }
   update(){
-    this.props.dispatch(update(this.props.trip._id, this.state));
-    this.props.toggle();
+    this.props.dispatch(update(this.props.trip._id, this.state))
+    this.props.toggle()
   }
   remove(){
-    this.props.dispatch(remove(this.props.trip._id));
-    this.props.toggle();
+    this.props.dispatch(remove(this.props.trip._id))
+    this.props.toggle()
   }
   render(){
-    const header = this.props.trip ? "Editing trip" : "Create a trip";
-    let deleteButton = null;
+    const header = this.props.trip ? "Editing trip" : "Create a trip"
+    let deleteButton = null
     if(this.props.trip) {
       deleteButton = (
         <Button color="danger" onClick={this.remove}>
@@ -131,4 +130,4 @@ class Trips extends Component {
 
 export default connect((store) => {
   return store
-})(windowSize(Trips));
+})(windowSize(Trips))

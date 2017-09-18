@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 
 import { connect } from 'react-redux'
 
@@ -14,11 +14,11 @@ import './style.css'
 
 class UserCard extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       editing: false
     }
-    this.toggleEdit = this.toggleEdit.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this)
   }
   toggleEdit(){
     this.setState({
@@ -26,7 +26,7 @@ class UserCard extends Component {
     })
   }
   render() {
-    let seeTrips = null;
+    let seeTrips = null
     if(this.props.currentUser.role === 'admin' && this.props.user.role === 'user'){
       seeTrips = (
         <Button tag={Link} to={`/trips/${this.props.user._id}`}>
@@ -48,7 +48,7 @@ class UserCard extends Component {
         </Card>
         <CreateUser isOpen={this.state.editing} toggle={this.toggleEdit} user={this.props.user}/>
       </div>
-    );
+    )
   }
 }
 
@@ -56,4 +56,4 @@ export default connect((store) => {
   return {
     currentUser: store.auth.user
   }
-})(UserCard);
+})(UserCard)

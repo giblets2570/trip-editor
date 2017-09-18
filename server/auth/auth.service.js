@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-import passport from 'passport';
-import jwt from 'jsonwebtoken';
-import expressJwt from 'express-jwt';
-import compose from 'composable-middleware';
+import passport from 'passport'
+import jwt from 'jsonwebtoken'
+import expressJwt from 'express-jwt'
+import compose from 'composable-middleware'
 
 function Auth(config, User) {
 
   const validateJwt = expressJwt({
     secret: config.secrets.session
-  });
+  })
 
   class AuthService {
     /**
@@ -22,9 +22,9 @@ function Auth(config, User) {
         .use((req, res, next) => {
           // allow access_token to be passed through query parameter as well
           if (req.query && req.query.hasOwnProperty('access_token')) {
-            req.headers.authorization = 'Bearer ' + req.query.access_token;
+            req.headers.authorization = 'Bearer ' + req.query.access_token
           }
-          validateJwt(req, res, next);
+          validateJwt(req, res, next)
         })
         // Attach user to request
         .use((req, res, next) => {
@@ -33,11 +33,11 @@ function Auth(config, User) {
               if (!user) {
                 throw {message: "You aren't authenticated to view this"}
               }
-              req.user = user;
-              next();
+              req.user = user
+              next()
             })
-            .catch(err => next(err));
-        });
+            .catch(err => next(err))
+        })
     }
 
     static meetsRequirements(user, roleRequired){
@@ -52,17 +52,17 @@ function Auth(config, User) {
      */
     static hasRole(roleRequired) {
       if (!roleRequired) {
-        throw new Error('Required role needs to be set');
+        throw new Error('Required role needs to be set')
       }
       return compose()
         .use(AuthService.isAuthenticated())
         .use(function(req, res, next) {
           if (AuthService.meetsRequirements(req.user, roleRequired)) {
-            next();
+            next()
           } else {
-            res.status(403).json({message: "You don't meet the requirements"});
+            res.status(403).json({message: "You don't meet the requirements"})
           }
-        });
+        })
     }
 
     /**
@@ -71,11 +71,11 @@ function Auth(config, User) {
     static signToken(id, role) {
       return jwt.sign({ _id: id, role: role }, config.secrets.session, {
         expiresIn: 60 * 60 * 5
-      });
+      })
     }
 
   }
-  return AuthService;
+  return AuthService
 }
 
-export default Auth;
+export default Auth

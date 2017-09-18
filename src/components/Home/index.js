@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 import { 
   Button,
@@ -6,9 +6,9 @@ import {
   FormGroup,
   Input,
   Label
-} from 'reactstrap';
+} from 'reactstrap'
 
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import Navigation from '../Navigation'
 import './style.css'
 
@@ -17,41 +17,41 @@ import { login, signup, toggle, passwordWrong } from '../../actions/authActions'
 
 class Login extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       name: "",
       email: "",
       password: "",
       passwordCheck: ""
-    };
-    this.toggle = this.toggle.bind(this);
-    this.submit = this.submit.bind(this);
+    }
+    this.toggle = this.toggle.bind(this)
+    this.submit = this.submit.bind(this)
   }
   handleChange(event,key) {
     this.setState({
       [key]: event.target.value
-    });
+    })
   }
   submit(e) {
-    e.preventDefault();
+    e.preventDefault()
     if(this.props.login_screen) {
-      this.props.dispatch(login(this.state));  
+      this.props.dispatch(login(this.state))  
     }else{
       if(this.state.password !== this.state.passwordCheck){
-        this.props.dispatch(passwordWrong());
+        this.props.dispatch(passwordWrong())
       }else{
-        this.props.dispatch(signup(this.state));
+        this.props.dispatch(signup(this.state))
       }
     }
   }
   toggle() {
-    this.props.dispatch(toggle());
+    this.props.dispatch(toggle())
   }
   render() {
-    const header  = this.props.login_screen ? "Login" : "Signup";
+    const header  = this.props.login_screen ? "Login" : "Signup"
     const link    = this.props.login_screen 
                   ? "Don't have an account?" 
-                  : "Already have an account?";
+                  : "Already have an account?"
 
     let template = (
       <div>
@@ -133,4 +133,4 @@ export default connect((store) => {
     error: store.auth.error,
     login_screen: store.auth.login_screen
   }
-})(Login);
+})(Login)

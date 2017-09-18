@@ -1,9 +1,9 @@
-import { getObjectId, objectsEqual, validatePresenceOf } from '../../utilities/generic';
+import { getObjectId, objectsEqual, validatePresenceOf } from '../../utilities/generic'
 
-import crypto from 'crypto';
+import crypto from 'crypto'
 
-import Model from '../../utilities/model';
-import Mongo from '../../utilities/mongo';
+import Model from '../../utilities/model'
+import Mongo from '../../utilities/mongo'
 
 class UserModel extends Model {
 	/**
@@ -14,21 +14,21 @@ class UserModel extends Model {
 	* @return {Boolean}
 	*/
 	authenticate(password, callback) {
-		console.log(password);
+		console.log(password)
 		if (!callback) {
-			return this.password === this.encryptPassword(password);
+			return this.password === this.encryptPassword(password)
 		}
 		this.encryptPassword(password, (err, pwdGen) => {
 			if (err) {
-				return callback(err);
+				return callback(err)
 			}
 
 			if (this.password === pwdGen) {
-				callback(null, true);
+				callback(null, true)
 			} else {
-				callback(null, false);
+				callback(null, false)
 			}
-		});
+		})
 	}
 
 	/**
@@ -39,30 +39,30 @@ class UserModel extends Model {
 	* @return {String}
 	*/
 	makeSalt(byteSize, callback) {
-		var defaultByteSize = 16;
+		var defaultByteSize = 16
 
 		if (typeof arguments[0] === 'function') {
-			callback = arguments[0];
-			byteSize = defaultByteSize;
+			callback = arguments[0]
+			byteSize = defaultByteSize
 		} else if (typeof arguments[1] === 'function') {
-			callback = arguments[1];
+			callback = arguments[1]
 		}
 
 		if (!byteSize) {
-			byteSize = defaultByteSize;
+			byteSize = defaultByteSize
 		}
 
 		if (!callback) {
-			return crypto.randomBytes(byteSize).toString('base64');
+			return crypto.randomBytes(byteSize).toString('base64')
 		}
 
 		return crypto.randomBytes(byteSize, (err, salt) => {
 			if (err) {
-				callback(err);
+				callback(err)
 			} else {
-				callback(null, salt.toString('base64'));
+				callback(null, salt.toString('base64'))
 			}
-		});
+		})
 	}
 
 	/**
@@ -74,26 +74,26 @@ class UserModel extends Model {
 	*/
 	encryptPassword(password, callback) {
 		if (!password || !this.salt) {
-			return null;
+			return null
 		}
 
-		const defaultIterations = 10000;
-		const defaultKeyLength = 64;
-		const salt = new Buffer(this.salt, 'base64');
-		const digest = 'sha1';
+		const defaultIterations = 10000
+		const defaultKeyLength = 64
+		const salt = new Buffer(this.salt, 'base64')
+		const digest = 'sha1'
 
 		if (!callback) {
 			return crypto.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength, digest)
-			.toString('base64');
+			.toString('base64')
 		}
 
 		return crypto.pbkdf2(password, salt, defaultIterations, defaultKeyLength, digest, (err, key) => {
 			if (err) {
-				callback(err);
+				callback(err)
 			} else {
-				callback(null, key.toString('base64'));
+				callback(null, key.toString('base64'))
 			}
-		});
+		})
 	}
 
 	/**
@@ -139,29 +139,29 @@ UserModel.hooks = {
 		save: function(next) {
 			// Handle new/update passwords
 			if (!this.isModified('password')) {
-				return next();
+				return next()
 			}
 			if (!validatePresenceOf(this.password)) {
-				return next(new Error('Invalid password'));
+				return next(new Error('Invalid password'))
 			}
 
 			// Make salt with a callback
 			this.makeSalt((saltErr, salt) => {
 				if (saltErr) {
-					return next(saltErr);
+					return next(saltErr)
 				}
-				this.salt = salt;
+				this.salt = salt
 				this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
 					if (encryptErr) {
-						return next(encryptErr);
+						return next(encryptErr)
 					}
-					this.password = hashedPassword;
-					next();
-				});
-			});
+					this.password = hashedPassword
+					next()
+				})
+			})
 		}
 	}
 }
 
 
-export default Mongo('User',UserModel);
+export default Mongo('User',UserModel)

@@ -34,21 +34,21 @@ export function logout() {
 export function signup(user) {
 	return {
 		type: "SIGNUP",
-		payload: axios.post(`${domain}users`, user)
+		payload: axios.post(`${domain}api/users`, user)
 	}
 }
 
 export function create(user) {
 	return {
 		type: "CREATE",
-		payload: axios.post(`${domain}users`, user)
+		payload: axios.post(`${domain}api/users`, user)
 	}
 }
 
 export function remove(id) {
 	return {
 		type: "REMOVE_USER",
-		payload: axios.delete(`${domain}users/${id}`)
+		payload: axios.delete(`${domain}api/users/${id}`)
 	}
 }
 
@@ -60,7 +60,7 @@ export function update(id,user) {
 	}
 	return {
 		type: "UPDATE",
-		payload: axios.put(`${domain}users/${id}`, user)
+		payload: axios.put(`${domain}api/users/${id}`, user)
 	}
 }
 
@@ -78,13 +78,13 @@ export function isLoggedIn() {
 export function get(id) {
 	return {
 		type: "GET_USER",
-		payload: axios.get(`${domain}users/${id}`)
+		payload: axios.get(`${domain}api/users/${id}`)
 	}
 }
 
 export function fetch() {
 	return {
 		type: "FETCH_USERS",
-		payload: axios.get(`${domain}users`)
+		payload: axios.get(`${domain}api/users`)
 	}
 }

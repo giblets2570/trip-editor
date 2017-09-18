@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PrintTemplate from 'react-print';
+import React, { Component } from 'react'
+import PrintTemplate from 'react-print'
 
 import TripCard from '../TripCard'
 
@@ -13,10 +13,11 @@ class PrintPage extends Component {
           <TripCard trip={trip}/>
         </div>
       )
-    });
-    console.log(trips);
+    })
     return (
       <PrintTemplate>
+        <br/>
+        <h2>Travel plan for next month.</h2>
         {trips}
       </PrintTemplate>
     )
@@ -25,6 +26,6 @@ class PrintPage extends Component {
 
 export default connect((store) => {
   return {
-    trips: store.trips.printTrips
-  };
-})(PrintPage);
+    trips: store.trips.printTrips,
+  }
+})(PrintPage)

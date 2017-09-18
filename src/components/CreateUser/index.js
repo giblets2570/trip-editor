@@ -1,27 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
 import { 
   Modal, ModalHeader, ModalBody,
   Button, Form,
   FormGroup, Input, Label
-} from 'reactstrap';
+} from 'reactstrap'
 
 import { passwordWrong, create, update, remove } from '../../actions/authActions'
 
 class CreateUser extends Component {
   constructor(props){
-    super(props);
+    super(props)
     this.state = {
       name: "",
       email: "",
       password: "",
       passwordCheck: ""
-    };
-    this.submit = this.submit.bind(this);
-    this.create = this.create.bind(this);
-    this.update = this.update.bind(this);
-    this.remove = this.remove.bind(this);
+    }
+    this.submit = this.submit.bind(this)
+    this.create = this.create.bind(this)
+    this.update = this.update.bind(this)
+    this.remove = this.remove.bind(this)
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -34,35 +33,34 @@ class CreateUser extends Component {
   handleChange(event,key) {
     this.setState({
       [key]: event.target.value
-    });
+    })
   }
   submit(e) {
-    e.preventDefault();
-    console.log(this.state);
+    e.preventDefault()
     if(this.state.password !== this.state.passwordCheck){
-      this.props.dispatch(passwordWrong());
+      this.props.dispatch(passwordWrong())
     }else{
       if(this.props.user && this.props.user._id){
-        this.update();
+        this.update()
       }else{
-        this.create();
+        this.create()
       }
     }
-    this.props.toggle();
+    this.props.toggle()
   }
   create(){
-    this.props.dispatch(create(this.state));
+    this.props.dispatch(create(this.state))
   }
   update(){
-    this.props.dispatch(update(this.props.user._id,this.state));
+    this.props.dispatch(update(this.props.user._id,this.state))
   }
   remove(){
-    this.props.dispatch(remove(this.props.user._id));
-    this.props.toggle();
+    this.props.dispatch(remove(this.props.user._id))
+    this.props.toggle()
   }
   render(){
-    const header = this.props.user ? "Editing user" : "Create a user";
-    let deleteButton = null;
+    const header = this.props.user ? "Editing user" : "Create a user"
+    let deleteButton = null
     if(this.props.user) {
       deleteButton = (
         <Button color="danger" onClick={this.remove}>
@@ -133,4 +131,4 @@ class CreateUser extends Component {
   }
 }
 
-export default connect()(CreateUser);
+export default connect()(CreateUser)

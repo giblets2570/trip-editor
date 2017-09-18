@@ -10,7 +10,7 @@ import './style.css'
 
 class Users extends Component {
   componentWillMount(){
-    this.props.dispatch(fetch());
+    this.props.dispatch(fetch())
   }
   render(){
     const users = this.props.users.map((user, key) => {
@@ -31,4 +31,4 @@ export default connect((store) => {
   return {
     users: store.auth.users
   }
-})(Users);
+})(Users)
