@@ -32,9 +32,10 @@ export default function reducer(state={
 			return {
 				...state,
 				logging_in: false,
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "LOGIN_FULFILLED": {
@@ -56,9 +57,10 @@ export default function reducer(state={
 			return {
 				...state, 
 				signing_up: false, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "SIGNUP_FULFILLED": {
@@ -80,9 +82,10 @@ export default function reducer(state={
 		case "CREATE_REJECTED": {
 			return {
 				...state, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "CREATE_FULFILLED": {
@@ -100,9 +103,10 @@ export default function reducer(state={
 		case "UPDATE_REJECTED": {
 			return {
 				...state, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "UPDATE_FULFILLED": {
@@ -123,11 +127,12 @@ export default function reducer(state={
 			return {
 				...state, 
 				checking_logged_in: false, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data,
 				logged_in: false,
-				token: null
+				token: null,
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data
 			}
 		}
 		case "CHECK_LOGGED_IN_FULFILLED": {
@@ -142,9 +147,10 @@ export default function reducer(state={
 		case "FETCH_USERS_REJECTED": {
 			return { 
 				...state, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "FETCH_USERS_FULFILLED": {
@@ -157,9 +163,10 @@ export default function reducer(state={
 			return {
 				...state, 
 				loading: false, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "REMOVE_USER_FULFILLED": {
@@ -176,9 +183,10 @@ export default function reducer(state={
 			return {
 				...state, 
 				loading: false, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "GET_USER_FULFILLED": {

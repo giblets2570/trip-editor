@@ -1,7 +1,7 @@
 'use strict'
 
 import Endpoint from '../../utilities/endpoint'
-
+import { isValidDate } from '../../utilities/generic'
 class TripEndpoint extends Endpoint {
   	endpoints() {
 		this.router.post('/', this.Auth.hasRole('user'), this.create.bind(this))
@@ -12,7 +12,10 @@ class TripEndpoint extends Endpoint {
   	}
 
   	async create(req, res) {
-  		if(!req.body.user) req.body.user = req.user._id
+  		if(!req.body.user) req.body.user = req.user._id;
+  		if(!req.body.destination) return this.sendError(res,'Trip requires a destination');
+  		if(isValidDate(req.body.startDate)) return this.sendError(res,'Trip requires a start date');
+  		if(isValidDate(req.body.endDate)) return this.sendError(res,'Trip requires a end date');
 		return super.create(req, res)
 	}
 

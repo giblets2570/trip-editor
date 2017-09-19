@@ -17,9 +17,10 @@ export default function reducer(state={
 			return {
 				...state, 
 				loading: false, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "CREATE_TRIP_FULFILLED": {
@@ -32,9 +33,10 @@ export default function reducer(state={
 			return {
 				...state, 
 				loading: false, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "UPDATE_TRIP_FULFILLED": {
@@ -53,9 +55,10 @@ export default function reducer(state={
 			return {
 				...state, 
 				loading: false, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "REMOVE_TRIP_FULFILLED": {
@@ -75,9 +78,10 @@ export default function reducer(state={
 			return {
 				...state, 
 				loading: false, 
-				error: 	action.payload.message ||
-						action.payload.data || 
-						action.payload.response.data 
+				error: 	
+					(action.payload.response && action.payload.response.data ? action.payload.response.data.message : null) ||
+					action.payload.message ||
+					action.payload.data 
 			}
 		}
 		case "FETCH_TRIPS_FULFILLED": {

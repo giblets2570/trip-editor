@@ -59,6 +59,23 @@ export let validatePresenceOf = function(value) {
   return value && value.length
 }
 
+export let isValidDate = function(date) {
+	date = new Date(date);
+	if ( Object.prototype.toString.call(date) === "[object Date]" ) {
+		// it is a date
+		if ( isNaN( date.getTime() ) ) {  // d.valueOf() could also work
+			// date is not valid
+			return false;
+		} else {
+			// date is valid
+			return true;
+		}
+	} else {
+		// not a date
+		return false;
+	}
+}
+
 export let uniqueSet = (_array) => {
 	let array = _array.slice()
 	let temp = {}
