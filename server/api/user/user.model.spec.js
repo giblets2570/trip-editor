@@ -1,43 +1,65 @@
-import { objectsEqual } from '../../utilities/generic';
+import { objectsEqual } from '../../utilities/generic'
 
-import User from '../user/user.model';
+import User from './user.model'
 
 describe('User',() => {
 
-	var user;
+	var user
 
-	beforeEach(function(){
-		user = new User();
-	});
+	before(async () => {
+		await User.remove({}).exec()
+	})
 
-	describe('.pickup()',() => {
+	beforeEach(async () => {
+		user = new User({password: 'test'})
+		await user.save()
+	})
 
-		it('should allow a device to be picked up',function*(){		
-			let location = new Location();
-			let device = new Device({
-				schedule: [{
-					action: 'pickup',
-					location: location
-				}]
-			});
-			device.location = location;
-			user.pickup(device,location);
-			expect(device.location).to.be.undefined;
-			expect(device.user).to.deep.equal(user);
-		});
+	describe('.encryptPassword(password, callback)',() => {
 
-		it('should not allow a device to be picked up',function*(){		
-			let location = new Location();
-			let device = new Device({
-				schedule: [{
-					action: 'pickup',
-					location: location
-				}]
-			});
-			let pickup = () => user.pickup(device,location);
-			expect(pickup).to.throw(Error);
-		});
 
-	});
+		it('should encrypt the password correctly', () => {		
+			let password = 'test'
+			let hashedPassword = user.encryptPassword(password)
+			expect(user.password).to.equal(hashedPassword)
+		})
 
-});
+		it('should encrypt the password correctly with callback', (done) => {		
+			let password = 'test'
+			user.encryptPassword(password, (err, hashedPassword) => {
+				expect(user.password).to.equal(hashedPassword)
+				done()
+			})
+		})
+
+	})
+
+	describe('.authenticate(password, callback)',() => {
+		it('should return true if password is correct', () => {		
+			let password = 'test'
+			expect(user.authenticate(password)).to.equal(true)
+		})
+
+		it('should return false if password is incorrect', () => {		
+			let password = 'wrong'
+			expect(user.authenticate(password)).to.equal(false)
+		})
+
+		it('should return true if password is correct with callback', (done) => {		
+			let password = 'test'
+			user.authenticate(password, (err, correct) => {
+				expect(correct).to.equal(true)
+				done()
+			})
+		})
+
+		it('should return false if password is incorrect with callback', (done) => {		
+			let password = 'wrong'
+			user.authenticate(password, (err, correct) => {
+				expect(correct).to.equal(false)
+				done()
+			})
+		})
+	})
+
+})

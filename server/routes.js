@@ -1,44 +1,44 @@
-import express from 'express';
-import config from './config';
-import path from 'path';
+import express from 'express'
+import config from './config'
+import path from 'path'
 
-import AuthService from './auth/auth.service';
-import User from './api/user/user.model';
-const Auth = AuthService(config,User);
+import AuthService from './auth/auth.service'
+import User from './api/user/user.model'
+const Auth = AuthService(config,User)
 
-import AuthRoutes from './auth';
+import AuthRoutes from './auth'
 
 function loadClass(name,type){
-  var Class;
+  var Class
   try {
-    Class = require(`./api/${name}/${name}.${type}`);
+    Class = require(`./api/${name}/${name}.${type}`).default
   } catch(error) {
-    if (config.debug) console.log(`Didn't find ${name} ${type}`);
-    if (error.name === 'SyntaxError') throw(error);
-    else if (error.name === 'ReferenceError') throw(error);
-    else Class = require(`./utilities/${type}`);
+    if (config.debug) console.log(`Didn't find ${name} ${type}`)
+    if (error.name === 'SyntaxError') throw(error)
+    else if (error.name === 'ReferenceError') throw(error)
+    else Class = require(`./utilities/${type}`).default
   }
   return Class
 }
 
 function createRoute(name){
-  var router = express.Router();
-  var Model = loadClass(name,'model');
-  var Service = loadClass(name,'service');
-  var Endpoint = loadClass(name,'endpoint');
-  var service = new Service(Model);
-  var endpoint = new Endpoint(router,service,Auth);
-  return router;
+  var router = express.Router()
+  var Model = loadClass(name,'model')
+  var Service = loadClass(name,'service')
+  var Endpoint = loadClass(name,'endpoint')
+  var service = new Service(Model)
+  var endpoint = new Endpoint(router,service,Auth)
+  return router
 }
 
 export default function(app) {
-  app.use('/auth',  AuthRoutes(config,User,Auth));
-  app.use('/users', createRoute('user'));
-  app.use('/trips', createRoute('trip'));
+  app.use('/auth',  AuthRoutes(config,User,Auth))
+  app.use('/api/users', createRoute('user'))
+  app.use('/api/trips', createRoute('trip'))
   // Serve static assets
-  app.use(express.static(path.resolve(__dirname, '..', 'build')));
+  app.use(express.static(path.resolve(__dirname, '..', 'build')))
   // Always return the main index.html, so react-router render the route in the client
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
-  });
+    res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'))
+  })
 }

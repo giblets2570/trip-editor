@@ -1,90 +1,83 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import windowSize from 'react-window-size';
+import windowSize from 'react-window-size'
 import moment from 'moment'
-
+import { DateRangePicker } from 'react-dates'
 import { 
   Modal, ModalHeader, ModalBody,
   Button, Form,
   FormGroup, Input, Label
-} from 'reactstrap';
+} from 'reactstrap'
 
-import { DateRangePicker } from 'react-dates';
 
 import { create, update, remove } from '../../actions/tripsActions'
 
 class Trips extends Component {
   constructor(props){
-    super(props);
+    super(props)
     this.state = {
       toggled: false,
-      isOpen: false,
       startDate:    null,
       endDate:      null,
       destination:  "",
       comments:     ""
     }
-    this.create = this.create.bind(this);
-    this.update = this.update.bind(this);
-    this.save = this.save.bind(this);
-    this.remove = this.remove.bind(this);
+    this.create = this.create.bind(this)
+    this.update = this.update.bind(this)
+    this.save = this.save.bind(this)
+    this.remove = this.remove.bind(this)
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      startDate:    this.props.trip ? moment(this.props.trip.startDate) : null,
-      endDate:      this.props.trip ? moment(this.props.trip.endDate) : null,
-      destination:  this.props.trip ? this.props.trip.destination : "",
-      comments:     this.props.trip ? this.props.trip.comments : ""
+      startDate:    nextProps.trip ? moment(nextProps.trip.startDate) : null,
+      endDate:      nextProps.trip ? moment(nextProps.trip.endDate) : null,
+      destination:  nextProps.trip ? nextProps.trip.destination : "",
+      comments:     nextProps.trip ? nextProps.trip.comments : "",
+      user:         nextProps.for 
     })
   }
   handleChange(event,key) {
     this.setState({
       [key]: event.target.value
-    });
+    })
   }
   save(e){
-    e.preventDefault();
+    e.preventDefault()
     if(this.props.trip && this.props.trip._id){
-      this.update();
+      this.update()
     }else{
-      this.create();
+      this.create()
     }
   }
   create(){
-    this.props.dispatch(create({
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-      destination: this.state.destination,
-      comments: this.state.comments
-    }));
-    this.props.toggle();
+    this.props.dispatch(create(this.state))
+    this.props.toggle()
   }
   update(){
-    this.props.dispatch(update(this.props.trip._id, {
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-      destination: this.state.destination,
-      comments: this.state.comments
-    }));
-    this.props.toggle();
+    this.props.dispatch(update(this.props.trip._id, this.state))
+    this.props.toggle()
   }
   remove(){
-    this.props.dispatch(remove(this.props.trip._id));
-    this.props.toggle();
+    this.props.dispatch(remove(this.props.trip._id))
+    this.props.toggle()
   }
   render(){
-    const header = this.props.trip ? "Editing trip" : "Create a trip";
-    let deleteButton = null;
+    const header = this.props.trip ? "Editing trip" : "Create a trip"
+    let deleteButton = null
     if(this.props.trip) {
       deleteButton = (
-        <Button onClick={this.remove}>
+        <Button color="danger" onClick={this.remove}>
           Delete
         </Button>
       )
     }
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{header}</ModalHeader>
+        <ModalHeader 
+          color="danger"
+          className="green-color"
+          toggle={this.props.toggle}>{header}
+        </ModalHeader>
         <ModalBody>
           <Form onSubmit={this.save}>
             <FormGroup>
@@ -102,6 +95,8 @@ class Trips extends Component {
               <Label for="When">When</Label>
               <br/>
               <DateRangePicker
+                startDateId='startDateCreate'
+                endDateId='endDateCreate'
                 startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                 endDate={this.state.endDate} // momentPropTypes.momentObj or null,
                 displayFormat="DD/MM/YYYY"
@@ -118,12 +113,12 @@ class Trips extends Component {
               <Input
                 type="textarea"
                 value={this.state.comments}
-                name="email"
+                name="comments"
                 id="Comments"
                 onChange={(e) => this.handleChange(e, 'comments')}
                 placeholder="I'm looking forward to the crepes" />
             </FormGroup>
-            <Button>
+            <Button color="success">
               Submit
             </Button>
             {deleteButton}
@@ -134,4 +129,4 @@ class Trips extends Component {
   }
 }
 
-export default connect()(windowSize(Trips));
+export default connect()(windowSize(Trips))

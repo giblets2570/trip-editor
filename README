@@ -1,0 +1,27 @@
+# Project Title
+
+Trippr
+
+## Getting Started
+
+
+### Installing
+
+
+```
+npm install
+```
+
+### Running the app
+
+```
+npm start
+```
+
+## Running the tests
+
+How to run 
+
+```
+npm run test
+```

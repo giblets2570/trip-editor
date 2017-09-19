@@ -4,31 +4,43 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server",
+    "start": "export $(cat .env) && node server",
     "react": "react-scripts start",
     "dev": "export $(cat .env) && nodemon server",
+    "tdd": "export $(cat .env) && nodemon server/test.js",
+    "build": "react-scripts build",
     "test": "node server/test.js",
-    "tdd": "nodemon server/test.js",
-    "build": "react-scripts build"
+    "test-react": "jest tests/jest",
+    "test-e2e": "nightwatch --config nightwatch.conf.js",
+    "test-all": "node server/test.js && jest tests/jest && nightwatch --config nightwatch.conf.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.22.2",
+    "babel-jest": "^21.0.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.22.0",
     "babel-preset-env": "^1.6.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-latest": "^6.22.0",
     "babel-register": "^6.22.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "chai-json-schema": "^1.4.0",
     "chai-things": "^0.2.0",
     "co-mocha": "^1.2.0",
-    "mocha": "^3.2.0",
+    "env2": "^2.2.0",
+    "enzyme": "^2.9.1",
+    "geckodriver": "^1.8.1",
+    "jest": "^21.1.0",
+    "jest-css-modules": "^1.1.0",
+    "mocha": "^3.5.3",
     "mock-require": "^2.0.1",
     "mockgoose": "^6.0.8",
+    "nightwatch": "^0.9.16",
+    "react-test-renderer": "^15.6.1",
+    "redux-mock-store": "^1.3.0",
     "rewire": "^2.5.2",
+    "selenium-download": "^2.0.10",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0"
   },
@@ -61,22 +73,28 @@
     "react-alert": "^2.3.0",
     "react-dates": "^12.6.0",
     "react-dom": "^15.6.1",
-    "react-loading": "^0.1.4",
+    "react-print": "^1.3.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.13",
-    "react-text-filter": "^3.0.0",
     "react-transition-group": "^1.2.0",
     "react-window-size": "^1.0.1",
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
     "redux-auth-wrapper": "^2.0.1",
     "redux-logger": "^3.0.6",
-    "redux-persist": "^4.9.1",
     "redux-promise-middleware": "^4.4.1",
-    "redux-thunk": "^2.2.0",
-    "request": "^2.79.0",
-    "request-promise": "^4.1.1",
-    "thunk": "0.0.1"
+    "redux-thunk": "^2.2.0"
+  },
+  "jest": {
+    "transform": {
+      ".*": "<rootDir>/node_modules/jest-css-modules"
+    },
+    "setupFiles": [
+      "<rootDir>/config/localStorage.mock.js",
+      "<rootDir>/config/Date.mock.js",
+      "<rootDir>/config/enzyme.js",
+      "<rootDir>/config/store.mock.js"
+    ]
   }
 }

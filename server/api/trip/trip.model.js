@@ -1,9 +1,7 @@
-import Model from '../../utilities/model';
-import Mongo from '../../utilities/mongo';
+import Model from '../../utilities/model'
+import Mongo from '../../utilities/mongo'
 
-class TripModel extends Model {
-	
-}
+class TripModel extends Model {}
 
 TripModel.schema = {
 	destination: String,
@@ -17,4 +15,4 @@ TripModel.schema = {
 }
 
 
-module.exports = Mongo('Trip',TripModel);
+export default Mongo('Trip',TripModel)
