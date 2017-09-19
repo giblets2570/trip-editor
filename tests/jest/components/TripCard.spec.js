@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import TripCard from '../../src/components/TripCard';
-import store from '../../src/store'
+import TripCard from '../../../src/components/TripCard';
+import store from '../../../src/store'
 import { Provider } from 'react-redux'
 
 describe('TripCard (Snapshot)', () => {

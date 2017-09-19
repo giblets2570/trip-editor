@@ -95,6 +95,8 @@ class Trips extends Component {
               <Label for="When">When</Label>
               <br/>
               <DateRangePicker
+                startDateId='startDateCreate'
+                endDateId='endDateCreate'
                 startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                 endDate={this.state.endDate} // momentPropTypes.momentObj or null,
                 displayFormat="DD/MM/YYYY"

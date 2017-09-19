@@ -33,7 +33,8 @@ module.exports = {
       selector: 'input[id=PasswordCheck]'
     },
     submitButton: {
-      selector: 'button[id=submitButton]'
+      selector: '//*[@id="submitButton"]',
+      locateStrategy: 'xpath'
     }
   }
 };

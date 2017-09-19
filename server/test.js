@@ -2,12 +2,11 @@ var colors = require('colors')
 var path = require('path')
 var glob = require('glob')
 var Mocha = require('mocha')
-var coMocha = require('co-mocha')
+require('env2')('.env');
 var mongoose = require('mongoose')
 var mockgoose = require('mockgoose')
 
-
-coMocha(Mocha)
+// coMocha(Mocha)
 
 // Global expectations
 var chai = require('chai')
@@ -40,7 +39,7 @@ let runUnitTests = () => new Promise(
 
 		// Load all json schemas
 		let loadedSchemas = new Promise((resolve,reject) => {
-			glob("./**/*.schema{,s}.js", function (error, files) {
+			glob("./**/*.schema{,s}.js", (error, files) => {
 				if (error) return reject(error)
 				files.forEach((file) => require(file.replace('server','')))
 				resolve()
@@ -49,7 +48,7 @@ let runUnitTests = () => new Promise(
 
 		// Find files and run all tests
 		let loadedTests = new Promise((resolve,reject) => {
-			glob("./server/**/*.spec.js", function (error, files) {
+			glob("./server/**/*.spec.js", (error, files) => {
 				if (error) return reject(error)
 				files.forEach((file) => unitMocha.addFile(file))
 				resolve()
@@ -63,7 +62,6 @@ let runUnitTests = () => new Promise(
 			})
 			.catch(reject)
 		})
-
 		Promise.all([
 			loadedSchemas,
 			loadedTests,
@@ -71,16 +69,18 @@ let runUnitTests = () => new Promise(
 		]).then(() => {
 			console.log('\nRunning unit tests'.underline.blue)
 			unitMocha.run((failures) => {
+				console.log('failuers: ', failures);
 				if (failures) reject(failures)
 				else resolve()
 			})
+		}).catch((e) => {
+			console.log(e);
 		})
 	}
 )
 
 Promise.resolve()
 	.then(runUnitTests)
-	// .then(runIntegrationTests)
 	.then(() => {
 		process.exit(0)
 	})

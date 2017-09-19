@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import UserCard from '../../src/components/UserCard';
-import store from '../../src/store'
+import UserCard from '../../../src/components/UserCard';
+import store from '../../../src/store'
 import { Provider } from 'react-redux'
 
 describe('UserCard (Snapshot)', () => {

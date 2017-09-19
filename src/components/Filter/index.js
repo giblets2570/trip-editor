@@ -61,12 +61,12 @@ class Filter extends Component {
         </Col>
         <Col lg="4" xs="12">
           <Label 
-            for="Destination">Search for your destination</Label>
+            for="DestinationFilter">Search for your destination</Label>
           <Input
             type="text"
             value={this.props.filters.destination}
             name="destinationFilter"
-            id="Destination"
+            id="DestinationFilter"
             onChange={(e) => this.handleChange(e)}
             placeholder="Paris" />
         </Col>

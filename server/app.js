@@ -39,9 +39,13 @@ if (config.seed){
 	})
 }
 
+var server = require('http').createServer(app);
+
 // Listen on port
-let listener = app.listen(config.port,function(){
+let listener = server.listen(config.port,function(){
 	let address = listener.address()
 	let link = `http://localhost:${address.port}/`.underline.blue
 	if (config.debug) console.log('Server running at',link)
 })
+
+export default server

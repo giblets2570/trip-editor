@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Users from '../../src/components/Users';
-import store from '../../src/store'
+import Users from '../../../src/components/Users';
+import store from '../../../src/store'
 import { Provider } from 'react-redux'
 
 describe('Users (Snapshot)', () => {

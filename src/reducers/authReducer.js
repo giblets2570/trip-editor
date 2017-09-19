@@ -131,7 +131,6 @@ export default function reducer(state={
 			}
 		}
 		case "CHECK_LOGGED_IN_FULFILLED": {
-			localStorage.setItem('role', action.payload.data.user.role)
 			return {
 				...state,
 				user: action.payload.data

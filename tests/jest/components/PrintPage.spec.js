@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import PrintPage from '../../src/components/PrintPage';
-import store from '../../src/store'
+import PrintPage from '../../../src/components/PrintPage';
+import store from '../../../src/store'
 import { Provider } from 'react-redux'
 
 describe('PrintPage (Snapshot)', () => {

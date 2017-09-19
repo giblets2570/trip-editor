@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Home from '../../src/components/Home';
-import store from '../../src/store'
+import Home from '../../../src/components/Home';
+import store from '../../../src/store'
 import { Provider } from 'react-redux'
 
 describe('Home (Snapshot)', () => {

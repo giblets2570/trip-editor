@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Navigation from '../../src/components/Navigation';
-import store from '../../src/store'
+import Navigation from '../../../src/components/Navigation';
+import store from '../../../src/store'
 import { Provider } from 'react-redux'
 
 describe('Navigation (Snapshot)', () => {

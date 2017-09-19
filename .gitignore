@@ -2,5 +2,7 @@ node_modules
 .env
 build
 selenium-debug.log
+npm-debug.log
 reports/
 .DS_Store
+screenshots/
