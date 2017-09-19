@@ -34,7 +34,7 @@ export function logout() {
 export function signup(user) {
 	return {
 		type: "SIGNUP",
-		payload: axios.post(`${domain}api/users`, user)
+		payload: axios.post(`${domain}auth/signup`, user)
 	}
 }
 

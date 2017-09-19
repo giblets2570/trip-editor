@@ -36,6 +36,27 @@ function AuthRoutes(config, User, Auth) {
     })(req, res, next)
   })
 
+  router.post('/signup', (req, res, next) => {
+    let user = req.body;
+    User.findOne({email: user.email}, (err, oldUser) => {
+      if(oldUser) return res.status(401).json({message: 'User with that email already exists'});
+      user = new User(user);
+      user.save().then((user) => {
+        passport.authenticate('local', (err, user, info) => {
+          var error = err || info
+          if (error) {
+            return res.status(401).json(error)
+          }
+          if (!user) {
+            return res.status(404).json({message: 'Something went wrong, please try again'})
+          }
+          var token = Auth.signToken(user._id, user.role)
+          res.json({ token, user: user.profile })
+        })(req, res, next)
+      })
+    })
+  })
+
   router.get('/loggedin', Auth.isAuthenticated(), (req, res) => {
     return res.send(req.user.profile)
   })

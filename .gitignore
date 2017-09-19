@@ -1,3 +1,6 @@
 node_modules
 .env
 build
+selenium-debug.log
+reports/
+.DS_Store

@@ -62,6 +62,9 @@ export default function reducer(state={
 			}
 		}
 		case "SIGNUP_FULFILLED": {
+			console.log(action.payload);
+			localStorage.setItem('token', action.payload.data.token)
+			localStorage.setItem('role', action.payload.data.user.role)
 			return {
 				...state, 
 				signing_up: false,
@@ -128,6 +131,7 @@ export default function reducer(state={
 			}
 		}
 		case "CHECK_LOGGED_IN_FULFILLED": {
+			localStorage.setItem('role', action.payload.data.user.role)
 			return {
 				...state,
 				user: action.payload.data

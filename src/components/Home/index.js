@@ -117,7 +117,7 @@ export class Home extends Component {
           <h3>{header}</h3>
           <Form onSubmit={this.submit}>
             {template}
-            <Button>
+            <Button id='submitButton'>
               Submit
             </Button> 
           </Form>
