@@ -15,17 +15,18 @@ const Users = userIsAuthenticated(['manager','admin'])(UsersComponent)
 const Trips = userIsAuthenticated(['user','admin'])(TripsComponent)
 const Home = userIsNotAuthenticated(HomeComponent)
 
+const alertOptions = {
+  offset: 14,
+  position: 'bottom left',
+  theme: 'dark',
+  time: 5000,
+  transition: 'scale'
+}
+
 class App extends Component {
-  alertOptions = {
-    offset: 14,
-    position: 'bottom left',
-    theme: 'dark',
-    time: 5000,
-    transition: 'scale'
-  }
   constructor(){
     super()
-    this.state = {} 
+    this.state = {}
   }
   componentWillMount() {
     this.props.dispatch(isLoggedIn())
@@ -54,7 +55,7 @@ class App extends Component {
             </Switch>
           </div>
         </BrowserRouter>
-        <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+        <AlertContainer ref={a => this.msg = a} {...alertOptions} />
       </div>
     )
   }

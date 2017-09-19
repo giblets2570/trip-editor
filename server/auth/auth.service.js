@@ -56,7 +56,7 @@ function Auth(config, User) {
       }
       return compose()
         .use(AuthService.isAuthenticated())
-        .use(function(req, res, next) {
+        .use((req, res, next) => {
           if (AuthService.meetsRequirements(req.user, roleRequired)) {
             next()
           } else {

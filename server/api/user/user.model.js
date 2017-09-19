@@ -14,7 +14,6 @@ class UserModel extends Model {
 	* @return {Boolean}
 	*/
 	authenticate(password, callback) {
-		console.log(password)
 		if (!callback) {
 			return this.password === this.encryptPassword(password)
 		}

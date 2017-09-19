@@ -15,7 +15,7 @@ import './style.css'
 import { connect } from 'react-redux'
 import { login, signup, toggle, passwordWrong } from '../../actions/authActions'
 
-class Login extends Component {
+export class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -121,16 +121,18 @@ class Login extends Component {
               Submit
             </Button> 
           </Form>
-          <Link to='#' className="right" onClick={this.toggle}> {link} </Link>
+          <a to='#' id='toggleLogin' className="right" onClick={this.toggle}> {link} </a>
         </div>
       </div>
     )
   }
 }
 
-export default connect((store) => {
+const HomeConnected = connect((store) => {
   return {
     error: store.auth.error,
     login_screen: store.auth.login_screen
   }
-})(Login)
+})(Home)
+
+export default HomeConnected

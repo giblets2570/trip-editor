@@ -33,7 +33,7 @@ class TripCard extends Component {
     })
   }
   render() {
-    const daysUntil = daysBetween(this.props.trip.startDate, new Date())
+    const daysUntil = daysBetween(this.props.trip.startDate, Date.now())
 
     let daysUntilCard
     if(daysUntil > 0) {

@@ -1,5 +1,4 @@
 import Service from '../../utilities/service'
-import rq from 'request-promise'
 
 class UserService extends Service {
   /*
@@ -26,6 +25,11 @@ class UserService extends Service {
     return users
   }
 
+  /*
+  * Update an object
+  * @param {id,Object} query
+  * @return {Object} updated object profile
+  */
   async update(id,object) {
     let existing = await this.show(id)
     if (!existing) return

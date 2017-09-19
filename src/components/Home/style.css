@@ -4,6 +4,9 @@
 
 .right {
 	float: right;
+	color: blue !important;
+	text-decoration: underline !important;
+	cursor: pointer;
 }
 
 .green-color {

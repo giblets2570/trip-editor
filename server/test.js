@@ -3,6 +3,10 @@ var path = require('path')
 var glob = require('glob')
 var Mocha = require('mocha')
 var coMocha = require('co-mocha')
+var mongoose = require('mongoose')
+var mockgoose = require('mockgoose')
+
+
 coMocha(Mocha)
 
 // Global expectations
@@ -21,15 +25,6 @@ global.sinon = require('sinon')
 chai.use(require('sinon-chai'))
 chai.use(require('chai-as-promised'))
 chai.use(require('chai-things'))
-
-
-// Create function to expect generator error
-global.expectError = function*(generator){
-	let threwError = false
-	try { generator() }
-	catch (error) { threwError = true }
-	expect(threwError).to.be.true
-}
 
 // Allow ES6 syntax
 require('babel-polyfill')
@@ -59,10 +54,20 @@ let runUnitTests = () => new Promise(
 				files.forEach((file) => unitMocha.addFile(file))
 				resolve()
 			})
+		});
+
+		let connectToMockgoose = new Promise((resolve,reject) => {
+			mockgoose(mongoose)
+			.then(() => {
+				mongoose.connect('',resolve);
+			})
+			.catch(reject)
 		})
+
 		Promise.all([
 			loadedSchemas,
 			loadedTests,
+			connectToMockgoose
 		]).then(() => {
 			console.log('\nRunning unit tests'.underline.blue)
 			unitMocha.run((failures) => {

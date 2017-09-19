@@ -7,7 +7,7 @@ export default function reducer(state={
 		role: initialRole
 	},
 	checking_logged_in: false,
-	logged_in: initialToken && initialToken !== "null",
+	logged_in: !!(initialToken && initialToken !== "null"),
 	login_screen: true,
 	logging_in: false,
 	signing_up: false,

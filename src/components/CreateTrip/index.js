@@ -17,7 +17,6 @@ class Trips extends Component {
     super(props)
     this.state = {
       toggled: false,
-      isOpen: false,
       startDate:    null,
       endDate:      null,
       destination:  "",
@@ -112,7 +111,7 @@ class Trips extends Component {
               <Input
                 type="textarea"
                 value={this.state.comments}
-                name="email"
+                name="comments"
                 id="Comments"
                 onChange={(e) => this.handleChange(e, 'comments')}
                 placeholder="I'm looking forward to the crepes" />
@@ -128,6 +127,4 @@ class Trips extends Component {
   }
 }
 
-export default connect((store) => {
-  return store
-})(windowSize(Trips))
+export default connect()(windowSize(Trips))
