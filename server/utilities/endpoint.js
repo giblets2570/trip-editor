@@ -22,7 +22,8 @@ class Endpoint {
   }
 
   sendError(response,error){
-    response.status(500).send({
+    console.log(error);
+    response.status(500).json({
       message: error.toString(),
       detail: error.stack
     })

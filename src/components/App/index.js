@@ -32,6 +32,7 @@ class App extends Component {
     this.props.dispatch(isLoggedIn())
   }
   componentWillReceiveProps(newProps) {
+    console.log(newProps);
     if(newProps.error) {
       this.showAlert(newProps.error.message || newProps.error)
     }
@@ -64,6 +65,6 @@ class App extends Component {
 export default connect((store) => {
   return {
     logged_in: store.auth.logged_in,
-    error: store.auth.error
+    error: store.auth.error || store.trips.error
   }
 })(App)
